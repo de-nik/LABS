@@ -1,0 +1,42 @@
+#include <iostream>
+class TFlat {
+	private:
+		int *Count,  // Количество комнат
+		    *Value;  // Стоимость квартиры
+	public:	
+		TFlat(int Number) {            
+			Count = new int[Number];   
+			Value = new int[Number];   
+		}
+		void Enter(int c_count, int c_value, int i) { // Заполнение массивов данными
+			Count[i] = c_count;
+			Value[i] = c_value;
+		}
+		void AverageValue(int Number, int Limit) { // Расчет средней стоимости одной комнаты и вывод всех данных на экран
+			std::cout << std::endl << "The parameters of all flats: " << std::endl;
+			for (int i = 0; i < Number; i++) 
+				std::cout << "[" << i + 1 << "] " << "Count = " << Count[i] << " | " << "Value = " << Value[i] << " | " << "Av. Value = " << Value[i] / Count[i] << std::endl;
+			std::cout << "------------------------------------------------------" << std::endl << "below the limit ->" << std::endl;
+			for (int i = 0; i < Number; i++) 
+				if (Value[i] / Count[i] < Limit) 
+					std::cout << "[" << i + 1 << "] " << "Count = " << Count[i] << " | " << "Value = " << Value[i] << " | " << "Av. Value = " << Value[i] / Count[i] << std::endl;
+		} 
+		void Delete() {    
+			delete Count;
+			delete Value;
+		}
+};
+int main(int argc, char* argv[]) {
+	int Value, Count, Number, Limit;
+	std::cout << "Enter the number of the flats and the sorting limit: " << std::endl;
+	std::cin >> Number >> Limit;
+	TFlat obj(Number);
+	std::cout << "Enter count of rooms and the value of the flats: " << std::endl;
+	for (int i = 0; i < Number; ++i) {
+		std::cin >> Count >> Value;
+		obj.Enter(Count, Value, i);
+	}
+	obj.AverageValue(Number, Limit);
+	obj.Delete();
+	system("pause");
+}
