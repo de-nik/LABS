@@ -2,8 +2,7 @@
 #include <string>
 class TFlat {
 private:
-	int *Value, 
-		*Time; 
+	int *Value, *Time; 
 	char **Title;
 public:
 	TFlat(int Number) {            
@@ -25,7 +24,7 @@ public:
 		std::cout << "------------------------------------------------------" << std::endl << "max ->" << std::endl;
 		std::cout << "[" << Buf + 1 << "] " << "Title = " << Title[Buf] << " | " << "Value = " << Value[Buf] << " | " << "Av. Value = " << Value[Buf] * Time[Buf] << std::endl;
 	}
-	void Delete() {    
+	~TFlat() {    
 		delete Title;
 		delete Value;
 		delete Time;
@@ -48,6 +47,5 @@ int main(int argc, char* argv[]) {
 			}
 		}
 		obj.AverageValue(Number, Buf);
-		obj.Delete();
 		system("pause");
 }
