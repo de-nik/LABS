@@ -6,18 +6,18 @@ private:
 		*Time;
 	char **Title;
 public:
-	TExh(int Number) {
+	TExh(const int Number) {
 		Title = new char*[Number];
 		for (int i = 0; i < Number; i++) Title[i] = new char[20];
 		Value = new int[Number];
 		Time = new int[Number];
 	}
-	void Enter(char *c_title, int c_value, int c_time, int i) {
+	void Enter(const char *c_title, const int c_value, const int c_time, int i) {
 		strcpy_s(Title[i], sizeof(c_title) + 1, c_title);
 		Value[i] = c_value;
 		Time[i] = c_time;
 	}
-	void AverageValue(int Number, int Buf) {
+	void AverageValue(const int Number, const int Buf) {
 		std::cout << std::endl << "The parameters of all exhibits: " << std::endl;
 		for (int i = 0; i < Number; i++)
 			std::cout << "[" << i + 1 << "] " << "Title = " << Title[i] << " | " << "Value = " << Value[i] << " | " << "Av. Value = " << Value[i] * Time[i] << std::endl;
@@ -25,9 +25,9 @@ public:
 		std::cout << "[" << Buf + 1 << "] " << "Title = " << Title[Buf] << " | " << "Value = " << Value[Buf] << " | " << "Av. Value = " << Value[Buf] * Time[Buf] << std::endl;
 	}
 	~TExh() {
-		delete []Title;
-		delete []Value;
-		delete []Time;
+		delete[]Title;
+		delete[]Value;
+		delete[]Time;
 	}
 };
 int main() {
