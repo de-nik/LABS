@@ -8,13 +8,12 @@ private:
 public:
 	TExh(int Number) {
 		Title = new char*[Number];
-		for (int i = 0; i < Number; i++)
-			Title[i] = new char[20];
+		for (int i = 0; i < Number; i++) Title[i] = new char[20];
 		Value = new int[Number];
 		Time = new int[Number];
 	}
 	void Enter(char *c_title, int c_value, int c_time, int i) {
-		strcpy_s(Title[i], 4 * sizeof(c_title), c_title);
+		strcpy_s(Title[i], sizeof(c_title) + 1, c_title);
 		Value[i] = c_value;
 		Time[i] = c_time;
 	}
@@ -26,9 +25,9 @@ public:
 		std::cout << "[" << Buf + 1 << "] " << "Title = " << Title[Buf] << " | " << "Value = " << Value[Buf] << " | " << "Av. Value = " << Value[Buf] * Time[Buf] << std::endl;
 	}
 	~TExh() {
-		delete Title;
-		delete Value;
-		delete Time;
+		delete []Title;
+		delete []Value;
+		delete []Time;
 	}
 };
 int main(int argc, char* argv[]) {
