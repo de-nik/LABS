@@ -30,7 +30,7 @@ public:
 		delete []Time;
 	}
 };
-int main(int argc, char* argv[]) {
+int main() {
 	int Value, Number, Time, Buf, Max = 0;
 	char Title[20];
 	std::cout << "Enter the number of exhibits: " << std::endl;
