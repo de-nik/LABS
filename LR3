@@ -22,8 +22,8 @@ public:
 				std::cout << "[" << i + 1 << "] " << "Count = " << Count[i] << " | " << "Value = " << Value[i] << " | " << "Av. Value = " << Value[i] / Count[i] << std::endl;
 	}
 	~TFlat() {
-		delete Count;
-		delete Value;
+		delete []Count;
+		delete []Value;
 	}
 };
 int main() {
