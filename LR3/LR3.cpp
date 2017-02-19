@@ -1,4 +1,4 @@
-#include "Header.h"
+#include "LR3.h"
 TVector::TVector() {
 	Vector = new int[0];
 	Size = 0;
