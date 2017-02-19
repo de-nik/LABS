@@ -7,11 +7,10 @@ TVector::~TVector() {
 	delete[] Vector;
 }
 
-TVector::TVector(int* arr, int n) {
-	Size = n;
-	Vector = new int[n];
-	for (int i = 0; i < n; i++)
-		Vector[i] = arr[i];
+TVector::TVector(int* arr, int size) {
+	Size = size;
+	Vector = new int[size];
+	memcpy(Vector, arr, Size * sizeof(int));
 }
 
 int TVector::operator [](int index) {
@@ -22,8 +21,7 @@ int TVector::operator [](int index) {
 TVector & TVector::operator = (TVector& rhs) {
 	Vector = new int[Size];
 	Size = rhs.Size;
-	for (int i = 0; i < Size; i++)
-		Vector[i] = rhs.Vector[i];
+	memcpy(Vector, rhs.Vector, Size * sizeof(int));
 	return *this;
 }
 int TVector::Length() const {
