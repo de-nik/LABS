@@ -32,6 +32,7 @@ public:
 	~TExh() {
 		delete[]Value;
 		delete[]Time;
+		delete[]a;
 	}
 };
 int main() {
