@@ -1,13 +1,13 @@
 #include "LR3.h"
-TVector::TVector() {
+TVector::TVector() { // Стандартный конструктор
 	Vector = new int[0];
 	Size = 0;
 }
-TVector::~TVector() {
+TVector::~TVector() { // Деструктор
 	delete[] Vector;
 }
 
-TVector::TVector(int* arr, int size) {
+TVector::TVector(int* arr, int size) { // Пользовательский конструктор
 	Size = size;
 	Vector = new int[size];
 	memcpy(Vector, arr, Size * sizeof(int));
@@ -24,10 +24,10 @@ TVector & TVector::operator = (TVector& rhs) {
 	memcpy(Vector, rhs.Vector, Size * sizeof(int));
 	return *this;
 }
-int TVector::Length() const {
+int TVector::Length() const { //Возврат размера массива
 	return Size;
 }
-TVector operator ^ (TVector Vector, int* arr) {
+TVector operator ^ (TVector Vector, int* arr) { // Побитовый оператор ^
 	int *result = new int[Vector.Length()];
 	for (int i = 0; i < Vector.Length(); i++)
 		result[i] = Vector[i] ^ arr[i];
