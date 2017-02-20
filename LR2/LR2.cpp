@@ -2,13 +2,15 @@
 #include <string>
 class TExh {
 private:
-	int *Value,
-		*Time;
+	int *Value, *Time;
 	std::string Title;
 	TExh *a;
 public:
 	TExh() {
-
+		Value = nullptr;
+		Time = nullptr;
+		a = nullptr;
+		Title = "\0";
 	}
 	TExh(const int Number) {
 		Value = new int[Number];
