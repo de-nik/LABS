@@ -24,14 +24,14 @@ public:
 		Time = new int[Numb];
 		a = new TExh[Numb];
 	}
-	void Enter(std::string *c_title, int c_value, int c_time, int i) const
+	void Enter(const std::string *c_title, const int c_value, const int c_time, const int i)
 	{
 		a[i].Title = *c_title;
 		Value[i] = c_value;
 		Time[i] = c_time;
 		T_V[i] = Time[i] * Value[i];
 	}
-	int MAX(){
+	int MAX()const{
 		int max = T_V[0], n = 0;
 		for (int i = 0; i < Numb; ++i)
 		{
