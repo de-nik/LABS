@@ -62,12 +62,14 @@ public:
 };
 int main() 
 {
-	int Value, Number, Time;
-	std::string Title;
+	int Value;
 	std::cout << "Enter the number of exhibits: " << std::endl;
+	int Number;
 	std::cin >> Number;
 	TExh obj(Number);
 	std::cout << "Enter title, value of exhibits and time of exposure: " << std::endl;
+	int Time;
+	std::string Title;
 	for (int i = 0; i < Number; ++i) 
 	{
 		std::cout << "[" << i + 1 << "]" << std::endl;
