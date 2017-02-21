@@ -12,6 +12,8 @@ public:
 		Value = nullptr;
 		Time = nullptr;
 		a = nullptr;
+		T_V = nullptr;
+		Numb = 0;
 		Title = "\0";
 	}
 	TExh(const int Number) 
