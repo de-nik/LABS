@@ -22,7 +22,7 @@ int main()
 {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	std::ifstream fin("C:\\Users\\Синед\\Desktop\\ex.txt");
+	std::ifstream fin("//FILE DIR.//");
 	std::string buff;
 	std::string *STR;
 	std::getline(fin, buff);
