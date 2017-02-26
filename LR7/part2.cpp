@@ -7,11 +7,11 @@ int Enter(std::string &buff) { // Функция для определения �
 	int n = 0;
 	char *st = new char[buff.length() + 1];
 	strcpy_s(st, buff.length() + 1, buff.c_str());
-	char *next_token = NULL;
-	char* pch = strtok_s(st, " ,.-", &next_token);
-	while (pch != NULL)
+	char *Next = NULL;
+	char* Sep = strtok_s(st, " ,.-", &Next);
+	while (Sep != NULL)
 	{
-		pch = strtok_s(NULL, " ,.-", &next_token);
+		Sep = strtok_s(NULL, " ,.-", &Next);
 		n++;
 	}
 	delete[]st;
@@ -79,13 +79,13 @@ int main()
 	STR = new std::string[n];
 	char *st = new char[buff.length() + 1];
 	strcpy_s(st, buff.length() + 1, buff.c_str());
-	char *next_token = NULL;
-	char* pch2 = strtok_s(st, " ,.-", &next_token);
+	char *Next = NULL;
+	char* Sep = strtok_s(st, " ,.-", &Next);
 	int i = 0;
-	while (pch2 != NULL)
+	while (Sep != NULL)
 	{
-		STR[i] = pch2;
-		pch2 = strtok_s(NULL, " ,.-", &next_token);
+		STR[i] = Sep;
+		Sep = strtok_s(NULL, " ,.-", &Next);
 		i++;
 	}
 	Find(n, STR);
