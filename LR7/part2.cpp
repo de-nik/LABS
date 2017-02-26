@@ -39,7 +39,7 @@ int main()
 		i++;
 	}
 	int Sos = 2, d = 0; //Кол-во слов в радиусе для вывода
-	for (int i = 0; i < n; i++) 
+	for (int i = 0; i < n; i++)
 	{
 		if (STR[i] == "волны")
 		{
@@ -55,13 +55,13 @@ int main()
 				}
 				std::cout << "|" << std::endl;
 			}
-			else if (i > i - Sos)
+			else if (i > n - i)
 			{
 				for (d = Sos; d >= 0; d--)
 				{
 					std::cout << STR[i - d];
 				}
-				for (d = 1; d < i - Sos; d++)
+				for (d = 1; d < n - i; d++)
 				{
 					std::cout << STR[i + d];
 				}
