@@ -85,7 +85,6 @@ int main()
 	while (pch2 != NULL)
 	{
 		STR[i] = pch2;
-
 		pch2 = strtok_s(NULL, " ,.-", &next_token);
 		i++;
 	}
