@@ -2,21 +2,21 @@
 TIME::TIME() {
 	Hour = 0;
 	Minute = 0;
-	Second = 0;
+	Minute = 0;
 }
 TIME::TIME(int a, int b, int c)
 {
 	Hour = a;
 	Minute = b;
-	Second = c;
+	Minute = c;
 }
 TIME TIME::operator +(TIME &obj) 
 {
 	int hour = Hour + obj.Hour;
 	int minute = Minute + obj.Minute;
-	int second = Second + obj.Second;
+	int second = Minute + obj.Minute;
 	if (second > 60)
-	{ 
+	{
 		int i = 0;
 		i = second / 60;
 		second -= i * 60;
@@ -35,19 +35,33 @@ TIME TIME::operator -(TIME &obj)
 {
 	int hour = Hour - obj.Hour;
 	int minute = Minute - obj.Minute;
-	int second = Second - obj.Second;
+	int second = Minute - obj.Minute;
 	if (second < 0)
 	{
 		int i = 0;
 		i = second / 60;
-		second = 0;
 		minute += i - 1;
+		second = 60 - (60 * i - second);
+	}
+	else if (second > 60)
+	{
+		int i = 0;
+		i = second / 60;
+		second -= i * 60;
+		minute += i;
 	}
 	if (minute < 0) 
 	{
 		int i = 0;
 		i = minute / 60;
-		
+		hour += i - 1;
+		minute = 60 - (60 * i - minute);
+	}
+	else if (minute > 60) {
+		int i = 0;
+		i = minute / 60;
+		minute -= i * 60;
+		hour += i;
 	}
 	if (hour < 0)
 	{
@@ -60,8 +74,43 @@ TIME TIME::operator -(TIME &obj)
 }
 bool TIME::operator ==(TIME &obj)
 {
-	return 1;
+	if (Hour == obj.Hour && Minute == obj.Minute && Minute == obj.Minute)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+bool TIME::operator >(TIME &obj)
+{
+	if (3600 * Hour + 60 * Minute + Second > 3600 * obj.Hour + 60 * obj.Minute + obj.Second)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+bool TIME::operator <(TIME &obj)
+{
+	if (3600 * Hour + 60 * Minute + Second < 3600 * obj.Hour + 60 * obj.Minute + obj.Second)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+void TIME::operator =(TIME &obj)
+{
+	Hour = obj.Hour;
+	Minute = obj.Minute;
+	Second = obj.Second;
 }
 void TIME::Print() {
-	std::cout << Hour << " | " << Minute << " | " << Second << std::endl;
+	std::cout << Hour << " hours " << Minute << " minutes " << Minute << "seconds" << std::endl;
 }
