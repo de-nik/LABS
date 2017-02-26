@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-int Enter(std::string &buff) {
+int Enter(std::string &buff) { // Функция для определения кол-ва строк
 	int n = 0;
 	char *st = new char[buff.length() + 1];
 	strcpy_s(st, buff.length() + 1, buff.c_str());
@@ -38,7 +38,7 @@ int main()
 		pch2 = strtok_s(NULL, " ,.-", &next_token);
 		i++;
 	}
-	int Sos = 2, d = 0;
+	int Sos = 2, d = 0; //Кол-во слов в радиусе для вывода
 	for (int i = 0; i < n; i++) 
 	{
 		if (STR[i] == "волны")
