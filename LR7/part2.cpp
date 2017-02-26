@@ -1,7 +1,9 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <Windows.h>
 int Enter(std::string &buff) { // Функция для определения кол-ва строк
+	setlocale(LC_ALL, "rus");
 	int n = 0;
 	char *st = new char[buff.length() + 1];
 	strcpy_s(st, buff.length() + 1, buff.c_str());
@@ -18,7 +20,8 @@ int Enter(std::string &buff) { // Функция для определения �
 
 int main()
 {
-	setlocale(LC_ALL, "rus");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	std::ifstream fin("C:\\Users\\Синед\\Desktop\\ex.txt");
 	std::string buff;
 	std::string *STR;
@@ -38,10 +41,13 @@ int main()
 		pch2 = strtok_s(NULL, " ,.-", &next_token);
 		i++;
 	}
-	int Sos = 2, d = 0; //Кол-во слов в радиусе для вывода
+	int Sos = 0, d = 0; //Кол-во слов в радиусе для вывода
+	std::string str;
+	std::cout << "Введите слов для поиска и радиус вывода: ";
+	std::cin >> str >> Sos;
 	for (int i = 0; i < n; i++)
 	{
-		if (STR[i] == "волны")
+		if (STR[i] == str)
 		{
 			if (i < Sos)
 			{
@@ -49,7 +55,7 @@ int main()
 				{
 					std::cout << STR[i - d];
 				}
-				for (d = 1; d < Sos; d++)
+				for (d = 1; d <= Sos; d++)
 				{
 					std::cout << STR[i + d];
 				}
