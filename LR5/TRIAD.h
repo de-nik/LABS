@@ -7,9 +7,9 @@ private:
 public:
 	TRIAD();
 	TRIAD(int a, int b, int c);
-	bool operator == (TRIAD &obj);
-	bool operator >(TRIAD &obj);
-	bool operator <(TRIAD &obj);
-	void operator =(TRIAD &obj);
+	virtual bool operator == (TRIAD &obj);
+	virtual bool operator >(TRIAD &obj);
+	virtual bool operator <(TRIAD &obj);
+	virtual void operator =(TRIAD &obj);
 	void Change(int a, int b, int c);
 };
