@@ -9,5 +9,8 @@ public:
 	TIME operator +(TIME &obj);
 	TIME operator -(TIME &obj);
 	bool operator ==(TIME &obj);
+	bool operator >(TIME &obj);
+	bool operator <(TIME &obj);
+	void operator =(TIME &obj);
 	void Print();
 };
