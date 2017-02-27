@@ -18,7 +18,7 @@ int Enter(std::string &buff) { // Функция для определения �
 	return n;
 }
 void Find(int n, std::string* STR) {
-	int Sos = 0;  //Кол-во слов в радиусе для вывода
+	int Sos = 0; //Кол-во слов в радиусе для вывода
 	std::string str;
 	std::cout << std::endl << "Введите слов для поиска и радиус вывода: ";
 	std::cin >> str >> Sos;
@@ -66,12 +66,12 @@ int main()
 	std::string *STR;
 	std::getline(fin, buff);
 	int n = 0;
-	n = Enter(buff);
-	STR = new std::string[n];
 	char *st = new char[buff.length() + 1];
 	strcpy_s(st, buff.length() + 1, buff.c_str());
 	char *Next = NULL;
 	char* Sep = strtok_s(st, " ,.-", &Next);
+	n = Enter(buff);
+	STR = new std::string[n];
 	int i = 0;
 	while (Sep != NULL)
 	{
