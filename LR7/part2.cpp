@@ -18,52 +18,43 @@ int Enter(std::string &buff) { // Функция для определения �
 	return n;
 }
 void Find(int n, std::string* STR) {
-	int Sos = 0, d = 0; //Кол-во слов в радиусе для вывода
+	int Sos = 0; //Кол-во слов в радиусе для вывода
 	std::string str;
-	std::cout << "Введите слов для поиска и радиус вывода: ";
+	std::cout << std::endl << "Введите слов для поиска и радиус вывода: ";
 	std::cin >> str >> Sos;
+	int nm = 0, *num;
+	num = new int[n];
 	for (int i = 0; i < n; i++)
 	{
 		if (STR[i] == str)
 		{
-			if (i < Sos)
-			{
-				for (d = i; d >= 0; d--)
-				{
-					std::cout << STR[i - d];
-				}
-				for (d = 1; d <= Sos; d++)
-				{
-					std::cout << STR[i + d];
-				}
-				std::cout << "|" << std::endl;
-			}
-			else if (i > n - i)
-			{
-				for (d = Sos; d >= 0; d--)
-				{
-					std::cout << STR[i - d];
-				}
-				for (d = 1; d < n - i; d++)
-				{
-					std::cout << STR[i + d];
-				}
-				std::cout << "|" << std::endl;
-			}
-			else
-			{
-				for (d = Sos; d >= 0; d--)
-				{
-					std::cout << STR[i - d];
-				}
-				for (d = 1; d <= Sos; d++)
-				{
-					std::cout << STR[i + d];
-				}
-				std::cout << "|" << std::endl;
-			}
+			num[nm] = i;
+			nm++;
 		}
-
+	}
+	int min = 0, max = 0;
+	for (int i = 0; i <= nm; i++)
+	{
+		if ((num[i] - Sos) < 0)
+		{
+			min = 0;
+			max = num[i] + Sos;
+		}
+		else if (num[i] + Sos >= n)
+		{
+			min = num[i] - Sos;
+			max = n-1;
+		}
+		else
+		{
+			min = num[i] - Sos;
+			max = num[i] + Sos;
+		}
+		for (int j = min; j <= max; j++)
+		{
+			std::cout << STR[j];
+		}
+		std::cout << std::endl;
 	}
 }
 int main()
@@ -85,6 +76,7 @@ int main()
 	while (Sep != NULL)
 	{
 		STR[i] = Sep;
+		std::cout << STR[i] << "|";
 		Sep = strtok_s(NULL, " ,.-", &Next);
 		i++;
 	}
