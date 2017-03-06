@@ -10,21 +10,21 @@ TZoo::TZoo(size_t capacity)
 }
 bool TZoo::AddNewAnimal(TAnimal ** newAnimal)
 {
-	// Проверяем корректность входного параметра
+	// РџСЂРѕРІРµСЂСЏРµРј РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚СЊ РІС…РѕРґРЅРѕРіРѕ РїР°СЂР°РјРµС‚СЂР°
 	if (newAnimal == nullptr)
 		return false;
 
-	// Зоопарк полон, нельзя добавить нового зверя
+	// Р—РѕРѕРїР°СЂРє РїРѕР»РѕРЅ, РЅРµР»СЊР·СЏ РґРѕР±Р°РІРёС‚СЊ РЅРѕРІРѕРіРѕ Р·РІРµСЂСЏ
 	if (NumAnimals == Capacity)
 		return false;
 
-	// Добавляем зверя в массив
+	// Р”РѕР±Р°РІР»СЏРµРј Р·РІРµСЂСЏ РІ РјР°СЃСЃРёРІ
 	Animals[NumAnimals] = *newAnimal;
 
-	// Забираем зверя у старого владельца, чтобы не удалить зверя дважды
+	// Р—Р°Р±РёСЂР°РµРј Р·РІРµСЂСЏ Сѓ СЃС‚Р°СЂРѕРіРѕ РІР»Р°РґРµР»СЊС†Р°, С‡С‚РѕР±С‹ РЅРµ СѓРґР°Р»РёС‚СЊ Р·РІРµСЂСЏ РґРІР°Р¶РґС‹
 	*newAnimal = nullptr;
 
-	// Увеличиваем счетчик
+	// РЈРІРµР»РёС‡РёРІР°РµРј СЃС‡РµС‚С‡РёРє
 	++NumAnimals;
 
 	return true;
@@ -98,7 +98,15 @@ void TZoo::Work()
 	}
 
 }
-
+void TZoo::ReLive(TZoo& place, int n, int m) {
+	if (Animals[n] != nullptr)
+	{
+		TAnimal* buf = nullptr;
+		buf = Animals[n];
+		Animals[n] = place.Animals[m];
+		place.Animals[m] = buf;	
+	}
+}
 TZoo::~TZoo()
 {
 	for (size_t i = 0; i < NumAnimals; ++i)
