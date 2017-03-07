@@ -14,6 +14,7 @@ public:
 	virtual ~TAnimal() = default;
 	virtual void Live(float time) = 0;
 	virtual void Dec() = 0;
+	virtual size_t &AgeBorn() = 0;
 	std::string GetName() const;
 	size_t GetAge() const;
 	size_t Grow();
