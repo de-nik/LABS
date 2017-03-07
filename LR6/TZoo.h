@@ -13,6 +13,7 @@ public:
 	bool AddNewAnimal(TAnimal ** newAnimal);
 	void Work();
 	void More();
+	void ReLive(TZoo& place, int n, int m);
 	size_t Delete();
 	~TZoo();
 };
