@@ -67,16 +67,17 @@ void TZoo::More()
 	std::cout << "TLeo: " << a.Count() << std::endl;
 	TTigris b;
 	std::cout << "TTigris: " << b.Count() << std::endl;
-	if (a.Count() >= 2)
-	{
-		TAnimal *newAn = *a.Born();
-		AddNewAnimal(&newAn);
-	}
-	if (b.Count() >= 2)
-	{
-		TAnimal *newAn = *b.Born();
-		AddNewAnimal(&newAn);
-	}
+		if (a.AgeBorn() >= 2)
+		{
+			TAnimal *newAn = *a.Born();
+			AddNewAnimal(&newAn);
+		}
+		if (a.AgeBorn() >= 2)
+		{
+			TAnimal *newAn = *b.Born();
+			AddNewAnimal(&newAn);
+		}
+	
 }
 void TZoo::Work()
 {
@@ -99,7 +100,7 @@ void TZoo::Work()
 
 }
 void TZoo::ReLive(TZoo& place, int n, int m) {
-	if (Animals[n] != nullptr)
+	if (Animals[n] != nullptr && place.Animals[m] != nullptr)
 	{
 		TAnimal* buf = nullptr;
 		buf = Animals[n];
