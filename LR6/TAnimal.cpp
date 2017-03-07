@@ -24,7 +24,10 @@ size_t TAnimal::GetAge() const
 }
 size_t TAnimal::Grow()
 {
-	return ++Age;
+	Age++;
+	if (Age >= Deathage()) --this->AgeBorn();
+	if (Age >= Bornage()) ++this->AgeBorn();
+	return Age;
 }
 size_t TAnimal::Deathage() {
 	return DeathAge;
