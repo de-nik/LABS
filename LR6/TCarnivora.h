@@ -20,6 +20,7 @@ public:
 	void Dec();
 	TAnimal** Born();
 	size_t &Count();
+	size_t &AgeBorn();
 	TLeo(const std::string & name, const size_t age);
 	virtual void Live(float time) override;
 };
@@ -33,6 +34,7 @@ public:
 	void Dec();
 	TAnimal** Born();
 	size_t &Count();
+	size_t &AgeBorn();
 	TTigris(const std::string & name, const size_t age);
 	virtual void Live(float time) override;
 };
