@@ -33,10 +33,10 @@ void TLeo::Live(float time)
 }
 
 TAnimal** TLeo::Born() {
-	std::cout << "And the name of the new our prisoner(TLeo) is ";
-	std::string name;
-	std::cin >> name;
-	TAnimal *Leo = new TLeo(name, 0);
+		std::cout << "And the name of the new our prisoner(TLeo) is ";
+		std::string name;
+		std::cin >> name;
+		TAnimal *Leo = new TLeo(name, 0);
 	return &Leo;
 }
 
@@ -45,7 +45,11 @@ size_t& TLeo::Count()
 	static size_t c = 0; 
 	return c; 
 }
-
+size_t& TLeo::AgeBorn()
+{
+	static size_t c = 0;
+	return c;
+}
 void TLeo::Dec() 
 {
 	--Count();
@@ -84,7 +88,11 @@ size_t& TTigris::Count()
 	static size_t c = 0; 
 	return c; 
 }
-
+size_t& TTigris::AgeBorn()
+{
+	static size_t c = 0;
+	return c;
+}
 void TTigris::Dec() 
 {
 	--Count();
