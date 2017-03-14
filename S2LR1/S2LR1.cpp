@@ -1,24 +1,3 @@
-#include <exception>
-#include <ctype.h>
-#include <iostream>
-#include <stdlib.h>
-#include <vector>
-#include <iterator>
-class CastException : public std::exception
-{
-};
-class OverFlow : public  CastException {
-};
-
-class Symbol : public  CastException {
-};
-
-int StrLen(const char* Data) {
-	int size = 0;
-	for (; Data[size] != 0; size++);
-	return size;
-}
-
 int intFromString(const char* data)
 {
 	std::cout << std::endl << "Welcome to <intFromString>(" << data << ")!" << std::endl;
@@ -28,7 +7,6 @@ int intFromString(const char* data)
 	{
 
 		try {
-
 			if (isalpha(data[i]) || ispunct(data[i]) || isspace(data[i])) {
 				throw Symbol();
 			}
@@ -75,7 +53,6 @@ bool boolFromString(const char * data)
 	{
 
 		try {
-
 			if (isalpha(data[i]) || ispunct(data[i]) || isspace(data[i]) || data[i] == '0') {
 				throw Symbol();
 			}
@@ -108,7 +85,6 @@ float floatFromString(const char * data)
 	{
 
 		try {
-
 			if (isalpha(data[i]) || ispunct(data[i]) || isspace(data[i])) {
 				throw Symbol();
 			}
@@ -166,6 +142,4 @@ int main()
 	std::cout << "FinalResult: " << boolFromString("11111") << std::endl;
 	std::cout << "FinalResult: " << boolFromString("11fgmvhm1101") << std::endl;
 	std::cout << "FinalResult: " << floatFromString("1df676fj.77g9") << std::endl;
-
-
 }
