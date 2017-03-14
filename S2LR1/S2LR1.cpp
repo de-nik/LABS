@@ -1,3 +1,4 @@
+#include "S2LR1.h"
 int intFromString(const char* data)
 {
 	std::cout << std::endl << "Welcome to <intFromString>(" << data << ")!" << std::endl;
