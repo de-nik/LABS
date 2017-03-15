@@ -1,4 +1,4 @@
-#include "LR1.h"
+#include "Header.h"
 int intFromString(const char* data)
 {
 	std::cout << std::endl << "Welcome to <intFromString>(" << data << ")!" << std::endl;
@@ -17,35 +17,27 @@ int intFromString(const char* data)
 		}
 	}
 	int i, j;
-	try
+
+	if (CountOfInt > 10)
 	{
-		if (CountOfInt > 10)
+		throw OverFlow();
+	}
+	else
+	{
+		for (i = 0, j = CountOfInt - 1; i < CountOfInt; i++, j--)
 		{
-			throw OverFlow();
-		}
-		else
-		{
-			for (i = 0, j = CountOfInt - 1; i < CountOfInt; i++, j--)
+			int k = Int;
+			Int = Arr[i] * pow(10, j) + Int;
+			if (k > 0 && Int < 0)
 			{
-				int k = Int;
-				Int = Arr[i] * pow(10, j) + Int;
-				if (k > 0 && Int < 0)
-				{
-					throw OverFlow();
-					break;
-				}
-				else if (k < 0 && Int > 0) {
-					throw OverFlow();
-					break;
-				}
+				throw OverFlow();
+			}
+			else if (k < 0 && Int > 0) {
+				throw OverFlow();
 			}
 		}
 	}
-	catch (OverFlow &exc)
-	{
-		std::cout << "	Error! " << std::endl;
-		return false;
-	}
+
 	return Int;
 }
 
@@ -95,38 +87,43 @@ float floatFromString(const char * data)
 		}
 	}
 	int i, j;
-	try
+	if (CountOfInt <= 10)
 	{
-		if (CountOfInt <= 10)
+		for (i = 0, j = t - 1; i < t; i++, j--)
 		{
-			for (i = 0, j = t - 1; i < t; i++, j--)
+			int k = Int;
+			Int = Arr[i] * pow(10, j) + Int;
+			if (k > 0 && Int < 0)
 			{
-				Int = Arr[i] * pow(10, j) + Int;
+				throw OverFlow();
 			}
-			float b = 0;
-			for (i = t, j = CountOfInt - t; i < CountOfInt; i++, j--)
-			{
-				b = Arr[i] * pow(10, j) + b;
+			else if (k < 0 && Int > 0) {
+				throw OverFlow();
 			}
-			b = b / pow(10, CountOfInt - t + 1);
-			Int += b;
 		}
-		else throw OverFlow();
+		float b = 0;
+		for (i = t, j = CountOfInt - t; i < CountOfInt; i++, j--)
+		{
+			b = Arr[i] * pow(10, j) + b;
+		}
+		b = b / pow(10, CountOfInt - t + 1);
+		Int += b;
 	}
-	catch (OverFlow &exc)
-	{
-		std::cout << "Error! " << std::endl;
-		return false;
-	}
+	else throw OverFlow();
 	return Int;
 }
 
 int main()
 {
 	try {
-		std::cout << "FinalResult: " << intFromString("456") << std::endl;
+		std::cout << "FinalResult: " << intFromString("4588888888888888888888888888") << std::endl;
 		std::cout << "FinalResult: " << intFromString("456fjsd 6-7b8,s") << std::endl;
-	} catch (Symbol &exc)
+	}
+	catch (Symbol &exc)
+	{
+		std::cout << "	Error!" << std::endl;
+	}
+	catch (OverFlow &exc)
 	{
 		std::cout << "	Error!" << std::endl;
 	}
@@ -135,16 +132,22 @@ int main()
 	{
 		std::cout << "FinalResult: " << boolFromString("11111") << std::endl;
 		std::cout << "FinalResult: " << boolFromString("11fgmvhm1101") << std::endl;
-	} catch (Symbol &exc)
+	}
+	catch (Symbol &exc)
 	{
 		std::cout << "	Error!" << std::endl;
 	}
 
 	try
 	{
-		std::cout << "FinalResult: " << floatFromString("1.89") << std::endl;
+		std::cout << "FinalResult: " << floatFromString("16777777777777777777777.89") << std::endl;
 		std::cout << "FinalResult: " << floatFromString("1fdgh.89dfg") << std::endl;
-	} catch (Symbol &exc)
+	}
+	catch (Symbol &exc)
+	{
+		std::cout << "	Error!" << std::endl;
+	}
+	catch (OverFlow &exc)
 	{
 		std::cout << "	Error!" << std::endl;
 	}
