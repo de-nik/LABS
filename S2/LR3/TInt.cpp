@@ -5,7 +5,7 @@ TInt::TInt() {
 TInt::TInt(const int iNt)
 {
 	long double m = iNt;
-	if (m > 2147483648.0L || m < -2147483647.0L)
+	if (m >= 1783793664.0L || m < -1004630015.0L)
 	{
 		throw OverFlow();
 	}
@@ -25,7 +25,7 @@ TInt TInt::operator =(const TInt &rhs)
 TInt operator +(const TInt &lhs, const TInt &rhs)
 {
 	long double m = (lhs.Int + rhs.Int);
-	if (m > 2147483648.0L || m < -2147483647.0L)
+	if (m > 1783793664.0L || m < -1004630015.0L)
 	{
 		throw OverFlow();
 	}
@@ -34,7 +34,7 @@ TInt operator +(const TInt &lhs, const TInt &rhs)
 TInt &operator +=(TInt &lhs, const TInt &rhs)
 {
 	long double m = (lhs.Int += rhs.Int);
-	if (m > 2147483648.0L || m < -2147483647.0L)
+	if (m > 1783793664.0L || m < -1004630015.0L)
 	{
 		throw OverFlow();
 	}
@@ -43,7 +43,7 @@ TInt &operator +=(TInt &lhs, const TInt &rhs)
 TInt operator -(const TInt &lhs, const TInt &rhs)
 {
 	long double m = (lhs.Int - rhs.Int);
-	if (m > 2147483648.0L || m < -2147483647.0L)
+	if (m > 1783793664.0L || m < -1004630015.0L)
 	{
 		throw OverFlow();
 	}
@@ -52,7 +52,7 @@ TInt operator -(const TInt &lhs, const TInt &rhs)
 TInt &operator -=(TInt &lhs, const TInt &rhs)
 {
 	long double m = (lhs.Int -= rhs.Int);
-	if (m > 2147483648.0L || m < -2147483647.0L)
+	if (m > 1783793664.0L || m < -1004630015.0L)
 	{
 		throw OverFlow();
 	}
@@ -65,7 +65,7 @@ TInt operator /(TInt &lhs, TInt &rhs)
 TInt operator *(TInt &lhs, TInt &rhs)
 {
 	long double m = (lhs.Int * rhs.Int);
-	if (m > 2147483648.0L || m < -2147483647.0L)
+	if (m > 1783793664.0L || m < -1004630015.0L)
 	{
 		throw OverFlow();
 	}
@@ -79,7 +79,7 @@ TInt &operator /=(TInt &lhs, const TInt &rhs)
 TInt &operator *=(TInt &lhs, const TInt &rhs)
 {
 	long double m = (lhs.Int *= rhs.Int);
-	if (m > 2147483648.0L || m < -2147483647.0L)
+	if (m > 1783793664.0L || m < -1004630015.0L)
 	{
 		throw OverFlow();
 	}
