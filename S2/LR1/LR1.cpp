@@ -25,15 +25,12 @@ int intFromString(const char* data)
 	{
 		for (i = 0, j = CountOfInt - 1; i < CountOfInt; i++, j--)
 		{
-			int k = Int;
-			Int = Arr[i] * pow(10, j) + Int;
-			if (k > 0 && Int < 0)
+			long double m = Arr[i] * pow(10, j) + Int;
+			if (m > 2147483648.0L || m < -2147483647.0L)
 			{
 				throw OverFlow();
 			}
-			else if (k < 0 && Int > 0) {
-				throw OverFlow();
-			}
+			else Int = Arr[i] * pow(10, j) + Int;
 		}
 	}
 
@@ -88,15 +85,12 @@ float floatFromString(const char * data)
 	{
 		for (i = 0, j = t - 1; i < t; i++, j--)
 		{
-			int k = Int;
-			Int = Arr[i] * pow(10, j) + Int;
-			if (k > 0 && Int < 0)
+			long double m = Arr[i] * pow(10, j) + Int;
+			if (m > 2147483648.0L || m < -2147483647.0L)
 			{
 				throw OverFlow();
 			}
-			else if (k < 0 && Int > 0) {
-				throw OverFlow();
-			}
+			else Int = Arr[i] * pow(10, j) + Int;
 		}
 		float b = 0;
 		for (i = t, j = CountOfInt - t; i < CountOfInt; i++, j--)
@@ -137,7 +131,7 @@ int main()
 
 	try
 	{
-		std::cout << "FinalResult: " << floatFromString("16777777777777777777777.89") << std::endl;
+		std::cout << "FinalResult: " << floatFromString("167777777777777777777.89") << std::endl;
 		std::cout << "FinalResult: " << floatFromString("1fdgh.89dfg") << std::endl;
 	}
 	catch (Symbol &exc)
