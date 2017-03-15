@@ -5,21 +5,30 @@ class TInt
 	int Int;
 public:
 	TInt();
-	TInt(int iNt);
+	TInt(const int iNt);
 	TInt operator =(const TInt &rhs);
-	friend TInt operator +(const TInt &rhs, const TInt &lhs);
-	friend TInt &operator +=(TInt &rhs, const TInt &lhs);
-	friend TInt operator -(const TInt &rhs, const TInt &lhs);
-	friend TInt &operator -=(TInt &rhs, const TInt &lhs);
-	TInt operator /(TInt &rhs);
-	TInt operator *(TInt &rhs);
-	TInt operator /=(const TInt &rhs);
-	TInt operator *=(const TInt &rhs);
-	bool operator==(const TInt &rhs);
-	const TInt &operator--(int);
-	const TInt operator--();
-	const TInt &operator++(int);
-	const TInt operator++();
-	int out();
+	operator int();
+	friend TInt operator +(const TInt &lhs, const TInt &rhs);
+	friend TInt &operator +=(TInt &lhs, const TInt &rhs);
+	friend TInt operator -(const TInt &lhs, const TInt &rhs);
+	friend TInt &operator -=(TInt &lhs, const TInt &rhs);
+	friend TInt operator /(TInt &lhs, TInt &rhs);
+	friend TInt operator *(TInt &lhs, TInt &rhs);
+	friend TInt &operator /=(TInt &lhs, const TInt &rhs);
+	friend TInt &operator *=(TInt &lhs, const TInt &rhs);
+	friend bool operator==(const TInt &lhs, const TInt &rhs);
+	friend bool operator >(const TInt &lhs, const TInt &rhs);
+	friend bool operator >=(const TInt &lhs, const TInt &rhs);
+	friend bool operator <(const TInt &lhs, const TInt &rhs);
+	friend bool operator <=(const TInt &lhs, const TInt &rhs);
+	friend const TInt& operator++(TInt& i);
+	friend const TInt operator++(TInt& i, int);
+	friend const TInt& operator--(TInt& i);
+	friend const TInt operator--(TInt& i, int);
+	friend std::ostream & operator <<(std::ostream &out, TInt &str);
 };
-std::ostream & operator <<(std::ostream &out, TInt & str);
+class CastException : public std::exception
+{
+};
+class OverFlow : public  CastException {
+};
