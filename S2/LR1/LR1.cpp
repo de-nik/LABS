@@ -6,24 +6,14 @@ int intFromString(const char* data)
 	std::vector <int> Arr(0);
 	for (int i = 0; data[i] != '\0'; i++)
 	{
-
-		try {
-
-			if (isalpha(data[i]) || ispunct(data[i]) || isspace(data[i])) {
-				throw Symbol();
-			}
-
-			else
-			{
-				char buf = data[i];
-				Arr.insert(Arr.end(), buf - '0');
-				CountOfInt++;
-			}
-
+		if (isalpha(data[i]) || ispunct(data[i]) || isspace(data[i])) {
+			throw Symbol();
 		}
-
-		catch (Symbol &exc) {
-			std::cout << "	Error! data[" << i + 1 << "] -> " << data[i] << std::endl;
+		else
+		{
+			char buf = data[i];
+			Arr.insert(Arr.end(), buf - '0');
+			CountOfInt++;
 		}
 	}
 	int i, j;
@@ -66,28 +56,16 @@ bool boolFromString(const char * data)
 	std::vector <int> Arr(0);
 	for (int i = 0; data[i] != '\0'; i++)
 	{
-
-		try {
-
-			if (isalpha(data[i]) || ispunct(data[i]) || isspace(data[i]) || data[i] == '0') {
-				throw Symbol();
-			}
-
-			else
-			{
-				char buf = data[i];
-				Arr.insert(Arr.end(), buf - '0');
-				CountOfInt++;
-			}
-
+		if (isalpha(data[i]) || ispunct(data[i]) || isspace(data[i]) || data[i] == '0') {
+			throw Symbol();
 		}
-
-		catch (Symbol &exc) {
-			std::cout << "	Error! data[" << i + 1 << "] -> " << data[i] << std::endl;
-			return false;
+		else
+		{
+			char buf = data[i];
+			Arr.insert(Arr.end(), buf - '0');
+			CountOfInt++;
 		}
 	}
-
 	return true;
 }
 
@@ -99,32 +77,23 @@ float floatFromString(const char * data)
 	std::vector <float> Arr(0);
 	for (int i = 0; data[i] != '\0'; i++)
 	{
-
-		try {
-
-			if (isalpha(data[i]) || ispunct(data[i]) || isspace(data[i])) {
+		if (isalpha(data[i]) || ispunct(data[i]) || isspace(data[i])) {
+			if (data[i] != ',' && data[i] != '.')
+			{
 				throw Symbol();
 			}
-
-			else
-			{
-				char buf = data[i];
-				Arr.insert(Arr.end(), buf - '0');
-				CountOfInt++;
-			}
-
-		}
-
-		catch (Symbol &exc) {
-			if (data[i] != ',' && data[i] != '.')
-				std::cout << "	Error! data[" << i + 1 << "] -> " << data[i] << std::endl;
 			else
 			{
 				t = CountOfInt;
 			}
 		}
+		else
+		{
+			char buf = data[i];
+			Arr.insert(Arr.end(), buf - '0');
+			CountOfInt++;
+		}
 	}
-
 	int i, j;
 	try
 	{
@@ -140,7 +109,6 @@ float floatFromString(const char * data)
 				b = Arr[i] * pow(10, j) + b;
 			}
 			b = b / pow(10, CountOfInt - t + 1);
-			std::cout << "b = " << b << std::endl;
 			Int += b;
 		}
 		else throw OverFlow();
@@ -155,8 +123,29 @@ float floatFromString(const char * data)
 
 int main()
 {
-	std::cout << "FinalResult: " << intFromString("456fjsd 6-7b8,s") << std::endl;
-	std::cout << "FinalResult: " << boolFromString("11111") << std::endl;
-	std::cout << "FinalResult: " << boolFromString("11fgmvhm1101") << std::endl;
-	std::cout << "FinalResult: " << floatFromString("1df676fj.77g9") << std::endl;
+	try {
+		std::cout << "FinalResult: " << intFromString("456") << std::endl;
+		std::cout << "FinalResult: " << intFromString("456fjsd 6-7b8,s") << std::endl;
+	} catch (Symbol &exc)
+	{
+		std::cout << "	Error!" << std::endl;
+	}
+
+	try
+	{
+		std::cout << "FinalResult: " << boolFromString("11111") << std::endl;
+		std::cout << "FinalResult: " << boolFromString("11fgmvhm1101") << std::endl;
+	} catch (Symbol &exc)
+	{
+		std::cout << "	Error!" << std::endl;
+	}
+
+	try
+	{
+		std::cout << "FinalResult: " << floatFromString("1.89") << std::endl;
+		std::cout << "FinalResult: " << floatFromString("1fdgh.89dfg") << std::endl;
+	} catch (Symbol &exc)
+	{
+		std::cout << "	Error!" << std::endl;
+	}
 }
