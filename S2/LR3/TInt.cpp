@@ -8,27 +8,29 @@ TInt::TInt(int iNt)
 }
 TInt TInt::operator =(const TInt &rhs)
 {
-	if (this == &rhs) 
+	if (this == &rhs)
 	{
 		return Int;
 	}
 	else return Int = rhs.Int;
 }
-const TInt TInt::operator +(const TInt &rhs)
+TInt operator +(const TInt &rhs, const TInt &lhs)
 {
-	return (rhs.Int + Int);
+	return (rhs.Int + lhs.Int);
 }
-TInt TInt::operator +=(const TInt &rhs)
+TInt &operator +=(TInt &rhs, const TInt &lhs)
 {
-	return Int += rhs.Int;
+	rhs.Int += lhs.Int;
+	return rhs;
 }
-TInt TInt::operator -(TInt &rhs)
+TInt operator -(const TInt &rhs, const TInt &lhs)
 {
-	return rhs.Int + Int;
+	return rhs.Int + lhs.Int;
 }
-TInt TInt::operator -=(const TInt &rhs)
+TInt &operator -=(TInt &rhs, const TInt &lhs)
 {
-	return Int -= rhs.Int;
+	rhs.Int -= lhs.Int;
+	return rhs;
 }
 TInt TInt::operator /(TInt &rhs)
 {
@@ -39,7 +41,7 @@ TInt TInt::operator *(TInt &rhs)
 	return rhs.Int * Int;
 }
 TInt TInt::operator /=(const TInt &rhs)
-{;
+{
 	return Int /= rhs.Int;
 }
 TInt TInt::operator *=(const TInt &rhs)
