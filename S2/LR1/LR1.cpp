@@ -1,7 +1,6 @@
 #include "LR1.h"
 int intFromString(const char* data)
 {
-	std::cout << std::endl << "Welcome to <intFromString>(" << data << ")!" << std::endl;
 	int Int = 0, CountOfInt = 0;
 	std::vector <int> Arr(0);
 	for (int i = 0; data[i] != '\0'; i++)
@@ -43,7 +42,6 @@ int intFromString(const char* data)
 
 bool boolFromString(const char * data)
 {
-	std::cout << std::endl << "Welcome to <boolFromString>(" << data << ")!" << std::endl;
 	int Int = 0, CountOfInt = 0;
 	std::vector <int> Arr(0);
 	for (int i = 0; data[i] != '\0'; i++)
@@ -63,7 +61,6 @@ bool boolFromString(const char * data)
 
 float floatFromString(const char * data)
 {
-	std::cout << std::endl << "Welcome to <floatFromString>(" << data << ")!" << std::endl;
 	float Int = 0;
 	int CountOfInt = 0, t = 0;
 	std::vector <float> Arr(0);
