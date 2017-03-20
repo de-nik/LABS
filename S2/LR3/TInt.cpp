@@ -23,33 +23,50 @@ TInt TInt::operator =(const TInt &rhs)
 }
 TInt operator +(const TInt &lhs, const TInt &rhs)
 {
-	if ((lhs.Int * rhs.Int) / rhs.Int != lhs.Int)
+	if (rhs.Int != 0)
 	{
-		throw OverFlow();
+		if ((lhs.Int * rhs.Int) / rhs.Int != lhs.Int)
+		{
+			throw OverFlow();
+		}
+		else return TInt(lhs.Int + rhs.Int);
 	}
 	else return TInt(lhs.Int + rhs.Int);
 }
 TInt &TInt::operator +=(const TInt &rhs)
 {
-	if ((Int * rhs.Int) / rhs.Int != Int)
+	if (rhs.Int != 0)
 	{
-		throw OverFlow();
+		if ((Int * rhs.Int) / rhs.Int != Int)
+		{
+			throw OverFlow();
+		}
+		else return *this;
 	}
 	else return *this;
 }
 TInt operator -(const TInt &lhs, const TInt &rhs)
 {
-	if ((lhs.Int * rhs.Int) / rhs.Int != lhs.Int)
+	if (rhs.Int != 0)
 	{
-		throw OverFlow();
+		if ((lhs.Int * rhs.Int) / rhs.Int != lhs.Int)
+		{
+			throw OverFlow();
+		}
+		else return TInt(lhs.Int + lhs.Int);
 	}
 	else return TInt(lhs.Int + lhs.Int);
+
 }
 TInt &TInt::operator -=(const TInt &rhs)
 {
-	if ((Int * rhs.Int) / rhs.Int != Int)
+	if (rhs.Int != 0)
 	{
-		throw OverFlow();
+		if ((Int * rhs.Int) / rhs.Int != Int)
+		{
+			throw OverFlow();
+		}
+		else return *this;
 	}
 	else return *this;
 }
@@ -59,10 +76,13 @@ TInt operator /(TInt &lhs, TInt &rhs)
 }
 TInt operator *(TInt &lhs, TInt &rhs)
 {
-
-	if ((lhs.Int * rhs.Int)/rhs.Int != lhs.Int)
+	if (rhs.Int != 0)
 	{
-		throw OverFlow();
+		if ((lhs.Int * rhs.Int) / rhs.Int != lhs.Int)
+		{
+			throw OverFlow();
+		}
+		else return TInt(lhs.Int * rhs.Int);
 	}
 	else return TInt(lhs.Int * rhs.Int);
 }
@@ -73,9 +93,16 @@ TInt &TInt::operator /=(const TInt &rhs)
 }
 TInt &TInt::operator *=(const TInt &rhs)
 {
-	if ((Int * rhs.Int) / rhs.Int != Int)
+	if (rhs.Int != 0)
 	{
-		throw OverFlow();
+		if ((Int * rhs.Int) / rhs.Int != Int)
+		{
+			throw OverFlow();
+		}
+		else {
+			Int = Int * rhs.Int;
+			return *this;
+		}
 	}
 	else {
 		Int = Int * rhs.Int;
