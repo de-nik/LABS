@@ -1,11 +1,12 @@
 #include "TInt.h"
+#include <limits>
 int main()
 {
 	try
 	{
-		TInt a(5000000), b(5000000), e(7);
-		a *= b;
-		std::cout << a << "|" << b << std::endl;
+		TInt a(1073741824), b(1073741824), e(7);
+		a -= b;
+		std::cout << a << std::endl;
 	}
 	catch (OverFlow &exc)
 	{

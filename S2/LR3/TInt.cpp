@@ -2,14 +2,13 @@
 TInt::TInt() {
 	Int = 0;
 }
-TInt::TInt(const int iNt)
+TInt::TInt(const long long int iNt)
 {
-	long double m = iNt;
-	if (m >= 1783793664.0L || m < -1004630015.0L)
+	if (iNt >= std::numeric_limits<int>::max() || iNt < std::numeric_limits<int>::min())
 	{
 		throw OverFlow();
 	}
-	Int = iNt;
+	else Int = iNt;
 }
 TInt::operator int() {
 	return Int;
@@ -24,39 +23,35 @@ TInt TInt::operator =(const TInt &rhs)
 }
 TInt operator +(const TInt &lhs, const TInt &rhs)
 {
-	long double m = (lhs.Int + rhs.Int);
-	if (m > 1783793664.0L || m < -1004630015.0L)
+	if ((lhs.Int * rhs.Int) / rhs.Int != lhs.Int)
 	{
 		throw OverFlow();
 	}
 	else return TInt(lhs.Int + rhs.Int);
 }
-TInt &operator +=(TInt &lhs, const TInt &rhs)
+TInt &TInt::operator +=(const TInt &rhs)
 {
-	long double m = (lhs.Int += rhs.Int);
-	if (m > 1783793664.0L || m < -1004630015.0L)
+	if ((Int * rhs.Int) / rhs.Int != Int)
 	{
 		throw OverFlow();
 	}
-	else return lhs;
+	else return *this;
 }
 TInt operator -(const TInt &lhs, const TInt &rhs)
 {
-	long double m = (lhs.Int - rhs.Int);
-	if (m > 1783793664.0L || m < -1004630015.0L)
+	if ((lhs.Int * rhs.Int) / rhs.Int != lhs.Int)
 	{
 		throw OverFlow();
 	}
 	else return TInt(lhs.Int + lhs.Int);
 }
-TInt &operator -=(TInt &lhs, const TInt &rhs)
+TInt &TInt::operator -=(const TInt &rhs)
 {
-	long double m = (lhs.Int -= rhs.Int);
-	if (m > 1783793664.0L || m < -1004630015.0L)
+	if ((Int * rhs.Int) / rhs.Int != Int)
 	{
 		throw OverFlow();
 	}
-	else return lhs;
+	else return *this;
 }
 TInt operator /(TInt &lhs, TInt &rhs)
 {
@@ -64,46 +59,48 @@ TInt operator /(TInt &lhs, TInt &rhs)
 }
 TInt operator *(TInt &lhs, TInt &rhs)
 {
-	long double m = (lhs.Int * rhs.Int);
-	if (m > 1783793664.0L || m < -1004630015.0L)
+
+	if ((lhs.Int * rhs.Int)/rhs.Int != lhs.Int)
 	{
 		throw OverFlow();
 	}
 	else return TInt(lhs.Int * rhs.Int);
 }
-TInt &operator /=(TInt &lhs, const TInt &rhs)
+TInt &TInt::operator /=(const TInt &rhs)
 {
-	lhs.Int /= rhs.Int;
-	return lhs;
+	Int /= rhs.Int;
+	return *this;
 }
-TInt &operator *=(TInt &lhs, const TInt &rhs)
+TInt &TInt::operator *=(const TInt &rhs)
 {
-	long double m = (lhs.Int *= rhs.Int);
-	if (m > 1783793664.0L || m < -1004630015.0L)
+	if ((Int * rhs.Int) / rhs.Int != Int)
 	{
 		throw OverFlow();
 	}
-	else return lhs;
+	else {
+		Int = Int * rhs.Int;
+		return *this;
+	}
 }
 bool operator==(const TInt &rhs, const TInt &lhs) {
 	return lhs.Int == rhs.Int;
 }
-const TInt& operator++(TInt& obj) {
-	obj.Int++;
-	return obj;
+TInt &TInt::operator++() {
+	++Int;
+	return *this;
 }
-const TInt operator++(TInt& obj, int) {
-	TInt old(obj.Int);
-	obj.Int++;
+TInt TInt::operator++(int) {
+	TInt old(Int);
+	Int++;
 	return old;
 }
-const TInt& operator--(TInt& obj) {
-	obj.Int--;
-	return obj;
+TInt &TInt::operator--() {
+	--Int;
+	return *this;
 }
-const TInt operator--(TInt& obj, int) {
-	TInt old(obj.Int);
-	obj.Int--;
+TInt TInt::operator--(int) {
+	TInt old(Int);
+	Int--;
 	return old;
 }
 bool operator >(const TInt &lhs, const TInt &rhs)
@@ -125,4 +122,19 @@ bool operator <=(const TInt &lhs, const TInt &rhs)
 std::ostream & operator <<(std::ostream &out, TInt & str) {
 	out << str.Int;
 	return out;
+}
+TInt TInt::operator & (const TInt & rhs) const {
+	return TInt(Int & rhs.Int);
+}
+TInt TInt::operator ^ (const TInt & rhs) const {
+	return TInt(Int ^ rhs.Int);
+}
+TInt TInt::operator | (const TInt & rhs) const {
+	return TInt(Int | rhs.Int);
+}
+TInt TInt::operator << (const TInt & rhs) const {
+	return TInt(Int << rhs.Int);
+}
+TInt TInt::operator >> (const TInt & rhs) const {
+	return TInt(Int >> rhs.Int);
 }
