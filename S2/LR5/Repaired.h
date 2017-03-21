@@ -5,14 +5,14 @@ class Repaired
 private:
 	TNotCopyable *tnotcopyable;
 public:
-	Repaired()
+	Repaired(TNotCopyable *pointer)
 	{
-		tnotcopyable = new TNotCopyable();
+		tnotcopyable = pointer;
 	}
 
 	~Repaired()
 	{
 		tnotcopyable->Close();
-		delete tnotcopyable;
+		tnotcopyable = nullptr;
 	}
 };

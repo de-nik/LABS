@@ -6,7 +6,7 @@ int main()
 	try
 	{
 		TNotCopyable obj;
-		Repaired ptr;
+		Repaired ptr = &obj;
 		obj.OpenToWrite("someFile.txt");
 
 		obj.OpenToRead("someOtherFile.txt");
