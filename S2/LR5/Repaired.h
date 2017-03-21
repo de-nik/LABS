@@ -5,6 +5,8 @@ class Repaired
 private:
 	TNotCopyable *tnotcopyable;
 public:
+	Repaired(){}
+	
 	Repaired(TNotCopyable *pointer)
 	{
 		tnotcopyable = pointer;
