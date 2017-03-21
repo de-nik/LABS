@@ -113,21 +113,25 @@ public:
 	// Если элемента в дереве не найдено, то функция генерирует исключение TNotFoundException
 	TNode * Find(const value_type & value)
 	{
-		TNode *CurNode = Root;
-		while (CurNode != nullptr) {
-			if (CurNode->Data == value)
+		if (Root == nullptr)
+		{
+			return nullptr;
+		}
+		TNode *node = Root;
+		while (node != nullptr) {
+			if (node->Data == value)
 			{
-				return CurNode;
+				return node;
 			}
 			else
 			{
-				if (CurNode->Data > value)
+				if (node->Data > value)
 				{
-					CurNode = CurNode->Left;
+					node = node->Left;
 				}
 				else
 				{
-					CurNode = CurNode->Right;
+					node = node->Right;
 				}
 			}
 		}
