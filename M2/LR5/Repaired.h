@@ -15,6 +15,5 @@ public:
 	~Repaired()
 	{
 		tnotcopyable->Close();
-		tnotcopyable = nullptr;
 	}
 };
