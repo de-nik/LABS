@@ -17,5 +17,4 @@ int main()
 	meta_print(&vec, -1);
 	std::copy(vec.begin(), vec.end(), std::ostream_iterator<int>(std::cout, " "));
 	std::cout << std::endl;
-+}
-
+}
