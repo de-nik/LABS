@@ -1,7 +1,11 @@
 #include "TVector.h"
 #include <iostream>
 
-void printVector(const TVector& vec)
+#include "TVector.h"
+#include <iostream>
+
+template<class T>
+void printVector(const TVector<T>& vec)
 {
 	for (int i = 0; i < vec.size(); ++i)
 		std::cout << vec[i] << " ";
@@ -11,7 +15,7 @@ void printVector(const TVector& vec)
 int main()
 {
 	{
-		TVector vec;
+		TVector<int> vec;
 		for (int i = 0; i < 32; ++i)
 			vec.push_back(i);
 
@@ -39,7 +43,7 @@ int main()
 		vec.resize(oldSize);
 		printVector(vec);
 
-		TVector vec2;
+		TVector<int> vec2;
 		for (int i = 0; i < 2; ++i)
 			vec2.push_back(i);
 
@@ -53,7 +57,7 @@ int main()
 
 		try
 		{
-			TVector::value_type item = vec2.at(1000000);
+			TVector<int>::value_type item = vec2.at(1000000);
 		}
 		catch (const std::exception & e)
 		{
@@ -69,6 +73,10 @@ int main()
 			std::cout << e.what();
 		}
 	}
+
+	TVector<float> vec;
+	for (int i = 0; i < 32; ++i)
+		vec.push_back(static_cast<float>(i) / 100);
 
 	system("pause");
 }
