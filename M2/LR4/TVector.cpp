@@ -1,9 +1,6 @@
 #include "TVector.h"
 #include <iostream>
 
-#include "TVector.h"
-#include <iostream>
-
 template<class T>
 void printVector(const TVector<T>& vec)
 {
