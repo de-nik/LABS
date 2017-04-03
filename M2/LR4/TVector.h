@@ -2,10 +2,11 @@
 #define __TVECTOR_INCLUDED__
 #include <iostream>
 #include <limits>
+template <typename T>
 class TVector
 {
 public:
-	using value_type = int;
+	using value_type = T;
 	using size_type = size_t;
 	using iterator = value_type *;
 	using reference = value_type&;
@@ -199,20 +200,19 @@ public:
 
 	void insert(iterator pos, size_type count, const value_type & value)
 	{
-		int position = *pos;
-		if (position > Count)
+		if (*pos > Count)
 		{
 			throw(std::exception("Error"));
 		}
 		Count += count;
 		reserve(Count);
-		for (int i = Count - 1; i >= position + count; i--)
+		for (int i = Count - 1; i >= *pos + count; i--)
 		{
 			Ptr[i] = Ptr[i - count];
 		}
 		for (int i = 0; i < count; i++)
 		{
-			Ptr[position + i] = value;
+			Ptr[*pos + i] = value;
 		}
 	}
 
