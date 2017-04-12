@@ -122,8 +122,7 @@ public:
 	Bitset(const Bitset<N> &rhs)
 	{
 		ptr = new bool[N];
-		for (size_t i = 0; i < N; ++i)
-			memcpy(ptr, rhs.ptr, N * sizeof(bool));
+		memcpy(ptr, rhs.ptr, N * sizeof(bool));
 	}
 
 	size_t size()
