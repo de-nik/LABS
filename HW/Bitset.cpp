@@ -19,7 +19,7 @@ public:
 	Bitset()
 	{
 		ptr = new bool[N];
-		for (size_t i(0); i < N; ++i)
+		for (size_t i = 0; i < N; ++i)
 			ptr[i] = false;
 	}
 
@@ -182,7 +182,7 @@ public:
 
 	Bitset<N>& reset()
 	{
-		for (size_t i(0); i < N; ++i)
+		for (size_t i = 0; i < N; ++i)
 		{
 			ptr[i] = false;
 		}
@@ -211,7 +211,7 @@ public:
 
 	Bitset<N>& flip()
 	{
-		for (size_t i(0); i < N; ++i)
+		for (size_t i = 0; i < N; ++i)
 		{
 			if (ptr[i])
 			{
@@ -227,7 +227,7 @@ public:
 
 	bool all() const
 	{
-		for (size_t i(0); i < N; ++i)
+		for (size_t i = 0; i < N; ++i)
 		{
 			if (!ptr[i])
 				return false;
@@ -237,7 +237,7 @@ public:
 
 	bool any() const
 	{
-		for (size_t i(0); i < N; ++i)
+		for (size_t i = 0; i < N; ++i)
 		{
 			if (ptr[i])
 				return true;
@@ -264,7 +264,7 @@ public:
 	std::string to_string() const
 	{
 		std::string data;
-		for (size_t i(0); i < N; ++i)
+		for (size_t i = 0; i < N; ++i)
 		{
 			if (ptr[i] == 1)
 				data.push_back('1');
@@ -355,7 +355,7 @@ public:
 template <size_t N>
 Bitset<N>& operator&=(Bitset<N>& lhs, const Bitset<N>& other)
 {
-	for (size_t i(0); i < N; ++i)
+	for (size_t i = 0; i < N; ++i)
 		lhs.ptr[i] = lhs.ptr[i] & other.ptr[i];
 	return *this;
 }
@@ -369,7 +369,7 @@ Bitset<N> operator&(const Bitset<N>& rhs)
 template <size_t N>
 Bitset<N>& operator|=(Bitset<N>& lhs, const Bitset<N>& other)
 {
-	for (size_t i(0); i < N; ++i)
+	for (size_t i = 0; i < N; ++i)
 		lhs.ptr[i] = lhs.ptr[i] | other.ptr[i];
 	return *this;
 }
@@ -383,7 +383,7 @@ Bitset<N> operator|(Bitset<N>& lhs, const Bitset<N>& other)
 template <size_t N>
 Bitset<N>& operator^=(Bitset<N>& lhs, const Bitset<N>& other)
 {
-	for (size_t i(0); i < N; ++i)
+	for (size_t i = 0; i < N; ++i)
 		lhs.ptr[i] = lhs.ptr[i] ^ other.ptr[i];
 	return *this;
 }
