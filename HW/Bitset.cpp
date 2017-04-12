@@ -438,17 +438,21 @@ bool operator!=(const Bitset<N>& lhs, const Bitset<N>& other)
 
 int main()
 {
-	try {
+	try 
+	{
 		Bitset <32> a(2147483648);
 		std::cout << a.to_ulong() << std::endl;
 	}
-	catch (const out_of_range& ex) {
+	catch (const out_of_range& ex) 
+	{
 		std::cout << "out_of_range exception" << '\n';
 	}
-	catch(const invalid_char& ex) {
+	catch(const invalid_char& ex) 
+	{
 		std::cout << "invalid_char exception" << '\n';
 	}
-	catch (const overflow& ex) {
+	catch (const overflow& ex) 
+	{
 		std::cout << "overflow exception" << '\n';
 	}
 }
