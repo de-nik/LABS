@@ -10,6 +10,9 @@ class out_of_range : public  cast_exception
 
 class overflow : public  cast_exception
 { };
+
+class invalid_char : public  cast_exception
+{ };
 template <size_t N>
 class Bitset
 {
@@ -50,9 +53,13 @@ public:
 			{
 				ptr[i] = true;
 			}
-			else
+			else if ((str[j] - '0') == 0)
 			{
 				ptr[i] = false;
+			}
+			else
+			{
+				throw invalid_char();
 			}
 		}
 		for (int i = N - str.size() - 1; i >= 0; i--)
@@ -74,9 +81,13 @@ public:
 				{
 					ptr[i] = true;
 				}
-				else
+				else if ((str[j] - '0') == 0)
 				{
 					ptr[i] = false;
+				}
+				else
+				{
+					throw invalid_char();
 				}
 			}
 			for (int i = N - 1 - number; i >= 0; i--)
@@ -90,7 +101,7 @@ public:
 		}
 	}
 
-	Bitset(const std::string &str, size_t number, char x)
+	Bitset(const std::string &str, size_t number, char x, char y)
 	{
 		if (number <= str.size())
 		{
@@ -99,13 +110,17 @@ public:
 				i >= N - number;
 				--i, --j)
 			{
-				if (str[j] == x || (str[j] - '0') == 1)
+				if (str[j] == y || (str[j] - '0') == 1)
 				{
 					ptr[i] = true;
 				}
-				else
+				else if (str[j] == x || (str[j] - '0') == 0)
 				{
 					ptr[i] = false;
+				}
+				else
+				{
+					throw invalid_char();
 				}
 			}
 			for (int i = N - 1 - number; i >= 0; i--)
@@ -143,7 +158,7 @@ public:
 
 	Bitset<N>& set(size_t pos, bool val = true)
 	{
-		if (pos > N || pos < 0)
+		if (pos > N - 1 || pos < 0)
 		{
 			throw out_of_range();
 		}
@@ -168,7 +183,7 @@ public:
 
 	Bitset<N>& reset(size_t pos)
 	{
-		if (pos > N || pos < 0)
+		if (pos > N - 1 || pos < 0)
 		{
 			throw out_of_range();
 		}
@@ -190,7 +205,7 @@ public:
 
 	Bitset<N>& flip(size_t pos)
 	{
-		if (pos > N || pos < 0)
+		if (pos > N - 1 || pos < 0)
 		{
 			throw out_of_range();
 		}
@@ -253,7 +268,7 @@ public:
 
 	bool test(size_t pos) const
 	{
-		if (pos > N || pos < 0)
+		if (pos > N - 1 || pos < 0)
 		{
 			throw out_of_range();
 		}
@@ -280,7 +295,7 @@ public:
 		{
 			if (ptr[N - 1 - i])
 			{
-				if (a + pow(2, i) - pow(2, i) == a)
+				if (i <= 30)
 				{
 					a = pow(2, i) + a;
 				}
@@ -295,7 +310,7 @@ public:
 
 	constexpr bool operator[](std::size_t pos) const
 	{
-		if (pos > N || pos < 0)
+		if (pos > N - 1 || pos < 0)
 		{
 			throw out_of_range();
 		}
@@ -307,7 +322,7 @@ public:
 
 	bool& operator[](std::size_t pos)
 	{
-		if (pos > N || pos < 0)
+		if (pos > N - 1 || pos < 0)
 		{
 			throw out_of_range();
 		}
@@ -419,4 +434,21 @@ bool operator!=(const Bitset<N>& lhs, const Bitset<N>& other)
 			return true;
 	}
 	return false;
+}
+
+int main()
+{
+	try {
+		Bitset <32> a(2147483648);
+		std::cout << a.to_ulong() << std::endl;
+	}
+	catch (const out_of_range& ex) {
+		std::cout << "out_of_range exception" << '\n';
+	}
+	catch(const invalid_char& ex) {
+		std::cout << "invalid_char exception" << '\n';
+	}
+	catch (const overflow& ex) {
+		std::cout << "overflow exception" << '\n';
+	}
 }
