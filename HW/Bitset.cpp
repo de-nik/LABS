@@ -8,16 +8,18 @@ class cast_exception : public std::exception
 class out_of_range : public  cast_exception
 { };
 
+class overflow : public  cast_exception
+{ };
 template <size_t N>
 class Bitset
 {
 	bool *ptr;
 public:
+
 	Bitset()
-		: my_pos(0)
 	{
 		ptr = new bool[N];
-		for (size_t i = 0; i < N; ++i)
+		for (size_t i(0); i < N; ++i)
 			ptr[i] = false;
 	}
 
@@ -180,7 +182,7 @@ public:
 
 	Bitset<N>& reset()
 	{
-		for (size_t i = 0; i < N; ++i)
+		for (size_t i(0); i < N; ++i)
 		{
 			ptr[i] = false;
 		}
@@ -209,7 +211,7 @@ public:
 
 	Bitset<N>& flip()
 	{
-		for (size_t i = 0; i < N; ++i)
+		for (size_t i(0); i < N; ++i)
 		{
 			if (ptr[i])
 			{
@@ -225,7 +227,7 @@ public:
 
 	bool all() const
 	{
-		for (size_t i = 0; i < N; ++i)
+		for (size_t i(0); i < N; ++i)
 		{
 			if (!ptr[i])
 				return false;
@@ -235,7 +237,7 @@ public:
 
 	bool any() const
 	{
-		for (size_t i = 0; i < N; ++i)
+		for (size_t i(0); i < N; ++i)
 		{
 			if (ptr[i])
 				return true;
@@ -250,10 +252,19 @@ public:
 		else return true;
 	}
 
+	bool test(size_t pos) const
+	{
+		if (pos > N || pos < 0)
+		{
+			throw out_of_range();
+		}
+		else return true;
+	}
+
 	std::string to_string() const
 	{
 		std::string data;
-		for (size_t i = 0; i < N; ++i)
+		for (size_t i(0); i < N; ++i)
 		{
 			if (ptr[i] == 1)
 				data.push_back('1');
@@ -270,24 +281,17 @@ public:
 		{
 			if (ptr[N - 1 - i])
 			{
-				a = pow(2, i) + a;
+				if (a + pow(2, i) - pow(2, i) == a)
+				{
+					a = pow(2, i) + a;
+				}
+				else
+				{
+					throw overflow();
+				}
 			}
 		}
 		return a;
-	}
-
-	bool test(size_t pos) const
-	{
-		if (pos > N || pos < 0)
-		{
-			throw out_of_range();
-		}
-		else return true;
-	}
-
-	~Bitset()
-	{
-		delete[] ptr;
 	}
 
 	constexpr bool operator[](std::size_t pos) const
@@ -341,6 +345,11 @@ public:
 		}
 	}
 
+	~Bitset()
+	{
+		delete[] ptr;
+	}
+
 };
 
 template <size_t N>
@@ -392,7 +401,7 @@ Bitset<N> operator~(Bitset<N>& lhs)
 }
 
 template <size_t N>
-bool operator==(Bitset<N>& lhs, const Bitset<N>& other)
+bool operator==(const Bitset<N>& lhs, const Bitset<N>& other)
 {
 	for (int i = N - 1; i >= 0; i--)
 	{
@@ -403,7 +412,7 @@ bool operator==(Bitset<N>& lhs, const Bitset<N>& other)
 }
 
 template <size_t N>
-bool operator!=(Bitset<N>& lhs, const Bitset<N>& other)
+bool operator!=(const Bitset<N>& lhs, const Bitset<N>& other)
 {
 	for (int i = N - 1; i >= 0; i--)
 	{
