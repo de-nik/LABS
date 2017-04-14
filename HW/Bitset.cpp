@@ -1,22 +1,42 @@
+#pragma once
 #include <iostream>      
 #include <string>         
 #include <bitset>         
 
 class cast_exception : public std::exception
 { };
-
 class out_of_range : public  cast_exception
 { };
-
 class overflow : public  cast_exception
 { };
-
 class invalid_char : public  cast_exception
 { };
+
+//
+
+
+
+//
+
 template <size_t N>
 class Bitset
 {
 	bool *ptr;
+	struct byte {
+		unsigned a0 : 1;
+		unsigned a1 : 1;
+		unsigned a2 : 1;
+		unsigned a3 : 1;
+		unsigned a4 : 1;
+		unsigned a5 : 1;
+		unsigned a6 : 1;
+		unsigned a7 : 1;
+	};
+
+	union Byte {
+		unsigned char value;
+		struct byte bitfield;
+	};
 public:
 
 	Bitset()
@@ -140,6 +160,8 @@ public:
 		memcpy(ptr, rhs.ptr, N * sizeof(bool));
 	}
 
+	//
+
 	size_t size()
 	{
 		return N;
@@ -237,6 +259,15 @@ public:
 			}
 		}
 		return *this;
+	}
+
+	void out()
+	{
+		for (size_t i = 0; i < N; ++i)
+		{
+			std::cout << ptr[i];
+		}
+		std::cout << std::endl;
 	}
 
 	bool all() const
@@ -364,6 +395,25 @@ public:
 		delete[] ptr;
 	}
 
+	//
+
+	template <size_t N> friend Bitset<N>& operator&=(Bitset<N>& lhs, const Bitset<N>& other);
+
+	template <size_t N> friend Bitset<N> operator&(const Bitset<N>& rhs);
+
+	template <size_t N> friend Bitset<N>& operator|=(Bitset<N>& lhs, const Bitset<N>& other);
+
+	template <size_t N> friend Bitset<N> operator|(Bitset<N>& lhs, const Bitset<N>& other);
+
+	template <size_t N> friend Bitset<N>& operator^=(Bitset<N>& lhs, const Bitset<N>& other);
+
+	template <size_t N> friend Bitset<N> operator^(Bitset<N>& lhs, const Bitset<N>& other);
+
+	template <size_t N> friend Bitset<N> operator~(Bitset<N>& lhs);
+
+	template <size_t N> friend bool operator==(const Bitset<N>& lhs, const Bitset<N>& other);
+
+	template <size_t N> friend bool operator!=(const Bitset<N>& lhs, const Bitset<N>& other);
 };
 
 template <size_t N>
@@ -419,7 +469,7 @@ bool operator==(const Bitset<N>& lhs, const Bitset<N>& other)
 {
 	for (int i = N - 1; i >= 0; i--)
 	{
-		if (lhs.ptr[i] != rhs.ptr[i])
+		if (lhs.ptr[i] != other.ptr[i])
 			return false;
 	}
 	return true;
@@ -434,25 +484,4 @@ bool operator!=(const Bitset<N>& lhs, const Bitset<N>& other)
 			return true;
 	}
 	return false;
-}
-
-int main()
-{
-	try 
-	{
-		Bitset <32> a(2147483648);
-		std::cout << a.to_ulong() << std::endl;
-	}
-	catch (const out_of_range& ex) 
-	{
-		std::cout << "out_of_range exception" << '\n';
-	}
-	catch(const invalid_char& ex) 
-	{
-		std::cout << "invalid_char exception" << '\n';
-	}
-	catch (const overflow& ex) 
-	{
-		std::cout << "overflow exception" << '\n';
-	}
 }
