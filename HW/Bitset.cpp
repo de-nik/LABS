@@ -50,9 +50,9 @@ public:
 	Bitset(const std::string &str)
 	{
 		size_t k = 1, i = 0, d = str.size() - 1;
-		for (; i < n && k != N && d != 0; ++i)
+		for (; i < n && k != N && d != -1; ++i)
 		{
-			for (int j = 0; j <= 7 && k != N && d != 0; ++j, --d, ++k)
+			for (int j = 0; j <= 7 && k != N && d != -1; ++j, --d, ++k)
 			{
 				if ((str[d] - '0') == 1)
 					ptr[i] |= 1 << j;
@@ -185,11 +185,12 @@ public:
 
 	Bitset<N>& set()
 	{
-		for (size_t i = 0; i < N; ++i)
+		size_t k = 1;
+		for (int i = 0; i < n; ++i)
 		{
-			if (ptr[i])
+			for (int j = 0; j <= 7; ++j)
 			{
-				ptr[i] = true;
+				ptr[i] |= 1 << j;
 			}
 		}
 		return *this;
@@ -210,10 +211,8 @@ public:
 
 	Bitset<N>& reset()
 	{
-		for (size_t i = 0; i < N; ++i)
-		{
-			ptr[i] = false;
-		}
+		for (size_t i = 0; i < n; ++i)
+			ptr[i] = 0;
 		return *this;
 	}
 
@@ -239,15 +238,11 @@ public:
 
 	Bitset<N>& flip()
 	{
-		for (size_t i = 0; i < N; ++i)
+		for (int i = 0; i < n; ++i)
 		{
-			if (ptr[i])
+			for (int j = 0; j <= 7; ++j)
 			{
-				ptr[i] = false;
-			}
-			else
-			{
-				ptr[i] = true;
+				ptr[i] ^= (1 << j);
 			}
 		}
 		return *this;
@@ -266,6 +261,7 @@ public:
 					std::cout << 0;
 				if (k++ == 14) break;
 			}
+			if (k == 14) break;
 		}
 		std::cout << std::endl;
 	}
