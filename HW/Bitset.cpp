@@ -14,77 +14,70 @@ class invalid_char : public  cast_exception
 
 //
 
-
-
-//
-
 template <size_t N>
 class Bitset
 {
-	bool *ptr;
-	struct byte {
-		unsigned a0 : 1;
-		unsigned a1 : 1;
-		unsigned a2 : 1;
-		unsigned a3 : 1;
-		unsigned a4 : 1;
-		unsigned a5 : 1;
-		unsigned a6 : 1;
-		unsigned a7 : 1;
-	};
-
-	union Byte {
-		unsigned char value;
-		struct byte bitfield;
-	};
+	const size_t n = N / 8 + 1;
+	unsigned char *ptr = new unsigned char[n];
 public:
 
 	Bitset()
 	{
-		ptr = new bool[N];
-		for (size_t i = 0; i < N; ++i)
-			ptr[i] = false;
+		for (size_t i = 0; i < n; ++i)
+			ptr[i] = 0;
 	}
 
 	Bitset(unsigned long long value)
 	{
-		ptr = new bool[N];
 		unsigned long long t = value;
-		for (int i = N - 1; i >= 0; i--)
+		size_t k = 1;
+		for (int i = 0; i < n; ++i)
 		{
-			if (t % 2)
+			for (int j = 0; j <= 7; ++j)
 			{
-				ptr[i] = true;
+				if (t % 2)
+					ptr[i] |= 1 << j;
+
+				else
+					ptr[i] &= ~(1 << j);
+
+				t = t / 2;
+				if (k++ == N) break;
 			}
-			else
-				ptr[i] = false;
-			t = t / 2;
 		}
 	}
 
 	Bitset(const std::string &str)
 	{
-		ptr = new bool[N];
-		for (int i = N - 1, j = str.size() - 1;
-			i >= N - str.size();
-			--i, --j)
+		size_t k = 1, i = 0, d = str.size() - 1;
+		for (; i < n && k != N && d != 0; ++i)
 		{
-			if ((str[j] - '0') == 1)
+			for (int j = 0; j <= 7 && k != N && d != 0; ++j, --d, ++k)
 			{
-				ptr[i] = true;
-			}
-			else if ((str[j] - '0') == 0)
-			{
-				ptr[i] = false;
-			}
-			else
-			{
-				throw invalid_char();
+				if ((str[d] - '0') == 1)
+					ptr[i] |= 1 << j;
+
+				else if ((str[d] - '0') == 0)
+					ptr[i] &= ~(1 << j);
+
+				else
+					throw invalid_char();
 			}
 		}
-		for (int i = N - str.size() - 1; i >= 0; i--)
+
+		for (; i < n && k != N; ++i)
 		{
-			ptr[i] = 0;
+			for (int e = 7 - ((8*(n - i) - 1) - str.size()); e <= 7 && k != N; ++e, ++k)
+			{
+				ptr[i] &= ~(1 << e);
+			}
+
+			for (int q = 0; q <= 7 && k != N; ++q, ++k)
+			{
+				ptr[i] &= ~(1 << q);
+			}
+
+
 		}
 	}
 
@@ -92,27 +85,21 @@ public:
 	{
 		if (number <= str.size())
 		{
-			ptr = new bool[N];
-			for (int i = N - 1, j = str.size() - 1;
-				i >= N - number;
-				--i, --j)
+			for (size_t k = 0; k < n; ++k)
 			{
-				if ((str[j] - '0') == 1)
+				for (int i = 0, j = 0; j < number; ++i, ++j)
 				{
-					ptr[i] = true;
+					if ((str[j] - '0') == 1)
+						ptr[k] |= 1 << i;
+
+					else if ((str[j] - '0') == 0)
+						ptr[k] &= ~(1 << i);
+
+					else
+						throw invalid_char();
 				}
-				else if ((str[j] - '0') == 0)
-				{
-					ptr[i] = false;
-				}
-				else
-				{
-					throw invalid_char();
-				}
-			}
-			for (int i = N - 1 - number; i >= 0; i--)
-			{
-				ptr[i] = 0;
+				for (int i = number; i < N; i++)
+					ptr[k] &= ~(1 << i);
 			}
 		}
 		else
@@ -125,27 +112,21 @@ public:
 	{
 		if (number <= str.size())
 		{
-			ptr = new bool[N];
-			for (int i = N - 1, j = str.size() - 1;
-				i >= N - number;
-				--i, --j)
+			for (size_t k = 0; k < n; ++k)
 			{
-				if (str[j] == y || (str[j] - '0') == 1)
+				for (int i = 0, j = 0; j < number; ++i, ++j)
 				{
-					ptr[i] = true;
+					if (str[j] == x)
+						ptr[k] |= 1 << i;
+
+					else if (str[j] == y)
+						ptr[k] &= ~(1 << i);
+
+					else
+						throw invalid_char();
 				}
-				else if (str[j] == x || (str[j] - '0') == 0)
-				{
-					ptr[i] = false;
-				}
-				else
-				{
-					throw invalid_char();
-				}
-			}
-			for (int i = N - 1 - number; i >= 0; i--)
-			{
-				ptr[i] = 0;
+				for (int i = number; i < N; i++)
+					ptr[k] &= ~(1 << i);
 			}
 		}
 		else
@@ -156,7 +137,7 @@ public:
 
 	Bitset(const Bitset<N> &rhs)
 	{
-		ptr = new bool[N];
+
 		memcpy(ptr, rhs.ptr, N * sizeof(bool));
 	}
 
@@ -170,10 +151,13 @@ public:
 	size_t count()
 	{
 		size_t temp_w = 0;
-		for (size_t i = 0; i < N; ++i)
+		for (size_t i = 0; i < n; ++i)
 		{
-			if (ptr[i])
-				++temp_w;
+			for (int j = N - 1; j >= 0; --j)
+			{
+				if (ptr[i] & (1 << j))
+					++temp_w;
+			}
 		}
 		return temp_w;
 	}
@@ -186,8 +170,16 @@ public:
 		}
 		else
 		{
-			ptr[N - 1 - pos] = val;
-			return *this;
+			size_t k = 0;
+			for (size_t i = 0; i < n; ++i)
+			{
+				if (k - 1 == pos)
+				{
+					ptr[i] |= 1 << (8 * i - 1 - k);
+				}
+				k++;
+
+			}
 		}
 	}
 
@@ -263,9 +255,17 @@ public:
 
 	void out()
 	{
-		for (size_t i = 0; i < N; ++i)
+		size_t k = 1;
+		for (int i = 0; i < n; ++i)
 		{
-			std::cout << ptr[i];
+			for (int j = 0; j <= 7; ++j)
+			{
+				if (ptr[i] & (1 << j))
+					std::cout << 1;
+				else
+					std::cout << 0;
+				if (k++ == 14) break;
+			}
 		}
 		std::cout << std::endl;
 	}
@@ -368,7 +368,6 @@ public:
 		if (*this != rhs)
 		{
 			ptr = rhs.ptr;
-			N = rhs.N;
 			return *this;
 		}
 		else
@@ -388,11 +387,6 @@ public:
 		{
 			return *this;
 		}
-	}
-
-	~Bitset()
-	{
-		delete[] ptr;
 	}
 
 	//
@@ -480,7 +474,7 @@ bool operator!=(const Bitset<N>& lhs, const Bitset<N>& other)
 {
 	for (int i = N - 1; i >= 0; i--)
 	{
-		if (lhs.ptr[i] != rhs.ptr[i])
+		if (lhs.ptr[i] != other.ptr[i])
 			return true;
 	}
 	return false;
