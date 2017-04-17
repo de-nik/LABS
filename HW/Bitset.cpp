@@ -268,20 +268,26 @@ public:
 
 	bool all() const
 	{
-		for (size_t i = 0; i < N; ++i)
+		for (int i = 0; i < n; ++i)
 		{
-			if (!ptr[i])
-				return false;
+			for (int j = 0; j <= 7; ++j)
+			{
+				if (!(ptr[i] & (1 << j)))
+					return false;
+			}
 		}
 		return true;
 	}
 
 	bool any() const
 	{
-		for (size_t i = 0; i < N; ++i)
+		for (int i = 0; i < n; ++i)
 		{
-			if (ptr[i])
-				return true;
+			for (int j = 0; j <= 7; ++j)
+			{
+				if (ptr[i] & (1 << j))
+					return true;
+			}
 		}
 		return false;
 	}
