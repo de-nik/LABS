@@ -5,8 +5,9 @@ class Repaired
 private:
 	TNotCopyable *tnotcopyable;
 public:
-	Repaired(){}
-	
+	Repaired() 
+	{ }
+
 	Repaired(TNotCopyable *pointer)
 	{
 		tnotcopyable = pointer;
@@ -14,6 +15,7 @@ public:
 
 	~Repaired()
 	{
-		tnotcopyable->Close();
+		if(tnotcopyable != nullptr)
+			tnotcopyable->Close();	
 	}
 };
