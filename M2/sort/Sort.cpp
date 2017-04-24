@@ -12,12 +12,11 @@ void swap(T &Left, T &Right)
 template <typename IT>
 void Sort(IT a, IT b)
 {
-	for (IT i = a; i != b; ++i) 
+	for (IT i = a; i < b - 1; ++i)
 	{
-		for (IT j = a; j != b; ++j) 
+		for (IT j = a; j < b - 1; j++)
 		{
-			if ((*i) < (*j))
-				swap((*i), (*j));
+			if (*(j + 1) < *j) swap(*(j + 1), *j);
 		}
 	}
 }
