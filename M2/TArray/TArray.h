@@ -20,7 +20,11 @@ public:
 
 	TArray(std::initializer_list<T> init) : TArray()
 	{
-		std::copy(init.begin(), init.end(), Data);
+		size_type j = 0;
+		for (auto & i : init) {
+			Ptr[j] = i;
+			++J;
+		}
 	}
 
 	~TArray() = default;
@@ -64,14 +68,16 @@ public:
 	{
 		if (nm > 0 || nm < N)
 			return Ptr[nm];
-		else 
+
+		else
 			throw std::out_of_range("!");
 	}
 	const_reference at(size_type nm) const
 	{
 		if (nm > 0 || nm < N)
 			return Ptr[nm];
-		else 
+
+		else
 			throw std::out_of_range("!");
 	}
 
@@ -105,7 +111,7 @@ public:
 
 	void fill(const value_type& val)
 	{
-		for (size_type i; i < N; ++i)
+		for (size_type i = 0; i < N; ++i)
 			Ptr[i] = val;
 	}
 
