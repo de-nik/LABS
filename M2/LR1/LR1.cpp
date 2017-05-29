@@ -1,11 +1,26 @@
-#include "Header.h"
+#include <exception>
+#include <ctype.h>
+#include <iostream>
+#include <stdlib.h>
+#include <vector>
+#include <iterator>
+
+class CastException : public std::exception
+{
+};
+class OverFlow : public  CastException {
+};
+
+class Symbol : public  CastException {
+};
+
 int intFromString(const char* data)
 {
 	int Int = 0, CountOfInt = 0;
 	std::vector <int> Arr(0);
 	for (int i = 0; data[i] != '\0'; i++)
 	{
-		if (ispunct(data[i]) || isspace(data[i])) {
+		if (ispunct(data[i]) || isspace(data[i]) || isalpha(data[i])) {
 			throw Symbol();
 		}
 		else
@@ -37,33 +52,26 @@ int intFromString(const char* data)
 	return Int;
 }
 
-bool boolFromString(const char * data)
-{
-	int Int = 0, CountOfInt = 0;
-	std::vector <int> Arr(0);
-	for (int i = 0; data[i] != '\0'; i++)
+bool boolFromString(const char* data) {
+	if (data == "true")
 	{
-		if (isalpha(data[i]) || ispunct(data[i]) || isspace(data[i]) || data[i] == '0') {
-			throw Symbol();
-		}
-		else
-		{
-			char buf = data[i];
-			Arr.insert(Arr.end(), buf - '0');
-			CountOfInt++;
-		}
+		return true;
 	}
-	return true;
+	else if (data == "false")
+	{
+		return false;
+	}
+	else throw Symbol();
 }
 
 float floatFromString(const char * data)
 {
-	float Int = 0;
+	double Int = 0;
 	int CountOfInt = 0, t = 0;
 	std::vector <float> Arr(0);
 	for (int i = 0; data[i] != '\0'; i++)
 	{
-		if (ispunct(data[i]) || isspace(data[i])) {
+		if (ispunct(data[i]) || isspace(data[i]) || isalpha(data[i])) {
 			if (data[i] != ',' && data[i] != '.')
 			{
 				throw Symbol();
@@ -92,7 +100,7 @@ float floatFromString(const char * data)
 			}
 			else Int = Arr[i] * pow(10, j) + Int;
 		}
-		float b = 0;
+		double b = 0;
 		for (i = t, j = CountOfInt - t; i < CountOfInt; i++, j--)
 		{
 			b = Arr[i] * pow(10, j) + b;
@@ -101,14 +109,14 @@ float floatFromString(const char * data)
 		Int += b;
 	}
 	else throw OverFlow();
-	return Int;
+	return (float)Int;
 }
 
 int main()
 {
 	try {
-		std::cout << "FinalResult: " << intFromString("45888") << std::endl;
-		std::cout << "FinalResult: " << intFromString("4566fgtfghfh") << std::endl;
+		std::cout << "FinalResult: " << intFromString("3") << std::endl;
+		std::cout << "FinalResult: " << intFromString("4566ghk") << std::endl;
 	}
 	catch (Symbol &exc)
 	{
@@ -121,7 +129,7 @@ int main()
 
 	try
 	{
-		std::cout << "FinalResult: " << boolFromString("11111") << std::endl;
+		std::cout << "FinalResult: " << boolFromString("true") << std::endl;
 		std::cout << "FinalResult: " << boolFromString("11fgmvhm1101") << std::endl;
 	}
 	catch (Symbol &exc)
