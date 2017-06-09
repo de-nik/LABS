@@ -71,27 +71,20 @@ public:
 
 	void reserve(size_type size)
 	{
+		if (size < InternalCapacity) return;
+		value_type * ptr = new value_type[size];
+		std::copy(this->begin(), this->end(), ptr);
+		delete[] Ptr;
+		Ptr = ptr;
 		InternalCapacity = size;
-		iterator buf = Ptr;
-		Ptr = new value_type[size];
-		if (size < Count)
-		{
-			Count = size;
-		}
-		memcpy(Ptr, buf, Count * sizeof(value_type));
-		if (buf != nullptr)
-		{
-			delete[] buf;
-		}
 	}
 
-	TVector & operator = (const TVector & vector)
+	TVector& operator=(const TVector& rhs)
 	{
-		Count = vector.Count;
-		InternalCapacity = vector.InternalCapacity;
-		if (Ptr != nullptr) delete[] Ptr;
-		Ptr = new value_type[InternalCapacity];
-		memcpy(Ptr, vector.Ptr, Count * sizeof(value_type));
+		if (this == &rhs) return *this;
+		this->reserve(rhs.InternalCapacity);
+		Count = rhs.Count;
+		std::copy(rhs.begin(), rhs.end(), this->begin());
 		return *this;
 	}
 
@@ -187,33 +180,24 @@ public:
 
 	iterator insert(iterator pos, const value_type & value)
 	{
-		if (pos < this->end())
-		{
-			*pos = value;
-			if (pos == this->end())
-			{
-				++Count;
-			}
-			return pos;
-		}
+		size_type i = Pos(pos);
+		Allot(Count);
+		Count++;
+		for (size_type k = Count - 1; k >= i; k--)
+			Ptr[k] = Ptr[k - 1];
+		Ptr[i - 1] = value;
+		return pos;
 	}
 
 	void insert(iterator pos, size_type count, const value_type & value)
 	{
-		if (*pos > Count)
-		{
-			throw(std::exception("Error"));
-		}
 		Count += count;
-		reserve(Count);
-		for (int i = Count - 1; i >= *pos + count; i--)
-		{
-			Ptr[i] = Ptr[i - count];
-		}
-		for (int i = 0; i < count; i++)
-		{
-			Ptr[*pos + i] = value;
-		}
+		size_type i = Pos(pos);
+		Allot(Count);
+		for (size_type k = Count - 1; k >= i + count - 1; k--)
+			Ptr[k] = Ptr[k - count];
+		for (size_t k = 0; k < count; k++)
+			Ptr[i + k] = value;
 	}
 
 	iterator erase(iterator pos)
