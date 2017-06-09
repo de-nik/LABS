@@ -1,483 +1,436 @@
-#pragma once
-#include <iostream>      
-#include <string>         
-#include <bitset>         
+#include<iostream>
+#include<string>
 
-class cast_exception : public std::exception
-{ };
-class out_of_range : public  cast_exception
-{ };
-class overflow : public  cast_exception
-{ };
-class invalid_char : public  cast_exception
-{ };
 
-//
 
-template <size_t N>
+
+template < int N >
+class sup_bit {
+	unsigned char *bit_num;
+	int len;
+public:
+	sup_bit()
+	{
+		bit_num = new unsigned char[N / 8];
+		len = (N / 8) + ((N % 8) > 0);
+		for (int i = 0; i < len; ++i)
+			bit_num[i] = 0;
+		len = N;
+	}
+
+	class TChangeBit : public sup_bit
+	{
+	public:
+		int index;
+		sup_bit point;
+
+		TChangeBit(int ind, sup_bit&  p) 
+		{
+			index = ind;
+			point = p;
+		}
+
+		TChangeBit operator=(bool val) 
+		{
+			point.setbit(index, val);
+			return *this;
+		}
+
+		operator bool()
+		{
+			return point.getbit(index);
+		}
+
+	};
+
+	const bool operator[](int index) const 
+	{
+		int cur = len - 1 - index;
+		bool ret;
+		int num = (cur / 8);
+		int num_in = cur % 8;
+		unsigned char current = bit_num[num];
+		for (int i = 0; i <= num_in; ++i)
+		{
+			b = current % 2;
+			current /= 2;
+		}
+		return ret;
+
+	}
+
+	bool getbit(int index) const 
+	{
+		int cur = len - 1 - index;
+		size_t ret;
+		int num = (cur / 8);
+		int num_in = cur % 8;
+		unsigned char current = bit_num[num];
+		for (int i = 0; i <= num_in; ++i)
+		{
+			ret = current % 2;
+			current /= 2;
+		}
+		return ret;
+	}
+
+	TChangeBit operator[](int index) 
+	{
+		TChangeBit ret(index, *this);
+		return ret;
+	}
+
+	TChangeBit change(int index)
+	{
+		TChangeBit ret(index, *this);
+		return ret;
+	}
+
+	void setbit(int index, size_t newval) 
+	{
+		int cur = len - 1 - index;
+		int num = (cur / 8);
+		int num_in = cur % 8;
+
+		size_t curr_bit;
+		unsigned char current = bit_num[num];
+		for (int i = 0; i <= num_in; ++i)
+		{
+			curr_bit = current % 2;
+			current /= 2;
+		}
+		if (curr_bit == 0 && newval == 1)
+			bit_num[num] += pow(2, num_in);
+		else if (curr_bit == 1 && newval == 0)
+			bit_num[num] -= pow(2, num_in);
+	}
+};
+
+
+
+template < size_t N >
 class Bitset
 {
-	const size_t n = N / 8 + 1;
-	unsigned char *ptr = new unsigned char[n];
+private:
+	sup_bit<N> sup;
 public:
 
-	Bitset()
-	{
-		for (size_t i = 0; i < n; ++i)
-			ptr[i] = 0;
-	}
+	Bitset() = default;
 
-	Bitset(unsigned long long value)
+	Bitset(unsigned long val)
 	{
-		unsigned long long t = value;
-		size_t k = 1;
-		for (int i = 0; i < n; ++i)
+		for (int i = N - 1; i >= 0; --i)
 		{
-			for (int j = 0; j <= 7; ++j)
-			{
-				if (t % 2)
-					ptr[i] |= 1 << j;
-
-				else
-					ptr[i] &= ~(1 << j);
-
-				t = t / 2;
-				if (k++ == N) break;
-			}
+			sup.setbit(i, val % 2);
+			val = val / 2;
 		}
 	}
 
-	Bitset(const std::string &str)
+	Bitset(const std::string& str, size_t pos, size_t n)
 	{
-		size_t k = 1, i = 0, d = str.size() - 1;
-		for (; i < n && k != N && d != -1; ++i)
+		size_t j = 0;
+		if (pos >= str.size())
+			throw std::out_of_range("Error!");
+		for (size_t i = pos; i < n; ++i)
 		{
-			for (int j = 0; j <= 7 && k != N && d != -1; ++j, --d, ++k)
+			if (j >= N)
+				return;
+			if (str[i] == '0')
+				sup.setbit(j, 0);
+			else if (str[i] == '1')
+				sup.setbit(j, 1);
+			else
 			{
-				if ((str[d] - '0') == 1)
-					ptr[i] |= 1 << j;
-
-				else if ((str[d] - '0') == 0)
-					ptr[i] &= ~(1 << j);
-
-				else
-					throw invalid_char();
+				~Bitset();
+				throw std::exception();
 			}
-		}
-
-		for (; i < n && k != N; ++i)
-		{
-			for (int e = 7 - ((8*(n - i) - 1) - str.size()); e <= 7 && k != N; ++e, ++k)
-			{
-				ptr[i] &= ~(1 << e);
-			}
-
-			for (int q = 0; q <= 7 && k != N; ++q, ++k)
-			{
-				ptr[i] &= ~(1 << q);
-			}
-
-
+			j++;
 		}
 	}
 
-	Bitset(const std::string &str, size_t number)
+	~Bitset() = default;
+
+	Bitset& set() 
 	{
-		if (number <= str.size())
-		{
-			for (size_t k = 0; k < n; ++k)
-			{
-				for (int i = 0, j = 0; j < number; ++i, ++j)
-				{
-					if ((str[j] - '0') == 1)
-						ptr[k] |= 1 << i;
+		for (size_t i = 0; i < N; ++i)
+			sup.setbit(i, 1);
+		return *this;
+	};
 
-					else if ((str[j] - '0') == 0)
-						ptr[k] &= ~(1 << i);
-
-					else
-						throw invalid_char();
-				}
-				for (int i = number; i < N; i++)
-					ptr[k] &= ~(1 << i);
-			}
-		}
-		else
-		{
-			throw out_of_range();
-		}
+	Bitset& set(size_t index, bool value = true) 
+	{
+		if (index >= N || index < 0)
+			throw std::exception();
+		sup.setbit(index, value);
+		return *this;
 	}
 
-	Bitset(const std::string &str, size_t number, char x, char y)
+	Bitset& reset()
 	{
-		if (number <= str.size())
+		for (size_t i = 0; i < N; ++i)
 		{
-			for (size_t k = 0; k < n; ++k)
-			{
-				for (int i = 0, j = 0; j < number; ++i, ++j)
-				{
-					if (str[j] == x)
-						ptr[k] |= 1 << i;
-
-					else if (str[j] == y)
-						ptr[k] &= ~(1 << i);
-
-					else
-						throw invalid_char();
-				}
-				for (int i = number; i < N; i++)
-					ptr[k] &= ~(1 << i);
-			}
+			sup.setbit(i, 0);
 		}
-		else
-		{
-			throw out_of_range();
-		}
+		return *this;
 	}
 
-	Bitset(const Bitset<N> &rhs)
+	Bitset& reset(size_t index)
 	{
-
-		memcpy(ptr, rhs.ptr, N * sizeof(bool));
+		sup.setbit(index, 0);
+		return *this;
 	}
 
-	//
+	Bitset& flip()
+	{
 
-	size_t size()
+		for (size_t i = 0; i < N; i++)
+		{
+			sup.setbit(i, sup.getbit(i) ^ 1);
+		}
+		return *this;
+	}
+
+	Bitset& flip(size_t index)
+	{
+		if (index >= N || index < 0)
+			throw std::exception();
+		sup.setbit(index, sup.getbit(index) ^ 1);
+		return *this;
+	}
+
+	typename sup_bit<N>::TChangeBit operator[](size_t index)
+	{
+
+		typename sup_bit<N>::TChangeBit tmp = sup.change(index);
+		return tmp;
+	}
+
+	size_t count() const 
+	{
+		size_t count = 0;
+		for (size_t i = 0; i < N; ++i)
+		{
+			count += sup.getbit(i);
+		}
+		return count;
+	}
+
+	size_t size() const
 	{
 		return N;
 	}
 
-	size_t count()
+	bool test(size_t index) const 
 	{
-		size_t temp_w = 0;
-		for (size_t i = 0; i < n; ++i)
-		{
-			for (int j = N - 1; j >= 0; --j)
-			{
-				if (ptr[i] & (1 << j))
-					++temp_w;
-			}
-		}
-		return temp_w;
+		if (index >= N || index < 0)
+			throw std::out_of_range("Error");
+		return sup.getbit(index);
 	}
 
-	Bitset<N>& set(size_t pos, bool val = true)
+	bool any() 
 	{
-		if (pos > N - 1 || pos < 0)
+		for (size_t i = 0; i < N; ++i)
 		{
-			throw out_of_range();
-		}
-		else
-		{
-			size_t k = 0;
-			for (size_t i = 0; i < n; ++i)
-			{
-				if (k - 1 == pos)
-				{
-					ptr[i] |= 1 << (8 * i - 1 - k);
-				}
-				k++;
-
-			}
-		}
-	}
-
-	Bitset<N>& set()
-	{
-		size_t k = 1;
-		for (int i = 0; i < n; ++i)
-		{
-			for (int j = 0; j <= 7; ++j)
-			{
-				ptr[i] |= 1 << j;
-			}
-		}
-		return *this;
-	}
-
-	Bitset<N>& reset(size_t pos)
-	{
-		if (pos > N - 1 || pos < 0)
-		{
-			throw out_of_range();
-		}
-		else
-		{
-			ptr[N - 1 - pos] = false;
-			return *this;
-		}
-	}
-
-	Bitset<N>& reset()
-	{
-		for (size_t i = 0; i < n; ++i)
-			ptr[i] = 0;
-		return *this;
-	}
-
-	Bitset<N>& flip(size_t pos)
-	{
-		if (pos > N - 1 || pos < 0)
-		{
-			throw out_of_range();
-		}
-		else
-		{
-			if (ptr[N - 1 - pos])
-			{
-				ptr[N - 1 - pos] = false;
-			}
-			else
-			{
-				ptr[N - 1 - pos] = true;
-			}
-			return *this;
-		}
-	}
-
-	Bitset<N>& flip()
-	{
-		for (int i = 0; i < n; ++i)
-		{
-			for (int j = 0; j <= 7; ++j)
-			{
-				ptr[i] ^= (1 << j);
-			}
-		}
-		return *this;
-	}
-
-	void out()
-	{
-		size_t k = 1;
-		for (int i = 0; i < n; ++i)
-		{
-			for (int j = 0; j <= 7; ++j)
-			{
-				if (ptr[i] & (1 << j))
-					std::cout << 1;
-				else
-					std::cout << 0;
-				if (k++ == 14) break;
-			}
-			if (k == 14) break;
-		}
-		std::cout << std::endl;
-	}
-
-	bool all() const
-	{
-		for (int i = 0; i < n; ++i)
-		{
-			for (int j = 0; j <= 7; ++j)
-			{
-				if (!(ptr[i] & (1 << j)))
-					return false;
-			}
-		}
-		return true;
-	}
-
-	bool any() const
-	{
-		for (int i = 0; i < n; ++i)
-		{
-			for (int j = 0; j <= 7; ++j)
-			{
-				if (ptr[i] & (1 << j))
-					return true;
-			}
+			if ((*this).operator[](i) == 1)
+				return true;
 		}
 		return false;
 	}
 
-	bool none() const
+	bool none() 
 	{
-		if (all())
-			return false;
-		else return true;
+		return !(any());
 	}
 
-	bool test(size_t pos) const
+	bool all() const
 	{
-		if (pos > N - 1 || pos < 0)
-		{
-			throw out_of_range();
-		}
-		else return true;
-	}
-
-	std::string to_string() const
-	{
-		std::string data;
 		for (size_t i = 0; i < N; ++i)
 		{
-			if (ptr[i] == 1)
-				data.push_back('1');
-			else
-				data.push_back('0');
+			if (sup.getbit(i) == 0)
+				return false;
 		}
-		return data;
+		return true;
 	}
 
-	unsigned long to_ulong() const
+	Bitset& operator&= (const Bitset& rhs)
 	{
-		unsigned long a = 0;
 		for (size_t i = 0; i < N; ++i)
 		{
-			if (ptr[N - 1 - i])
+			if (sup.getbit(i) == 0 || rhs.sup.getbit(i) == 0)
 			{
-				if (i <= 30)
-				{
-					a = pow(2, i) + a;
-				}
-				else
-				{
-					throw overflow();
-				}
+				sup.setbit(i, 0);
 			}
+			else
+				sup.setbit(i, 1);
 		}
-		return a;
+		return *this;
 	}
 
-	constexpr bool operator[](std::size_t pos) const
+	Bitset& operator|= (const Bitset& rhs) 
 	{
-		if (pos > N - 1 || pos < 0)
+		for (size_t i = 0; i < N; ++i)
 		{
-			throw out_of_range();
+			if (sup.getbit(i) == 1 || rhs.sup.getbit(i) == 1)
+			{
+				sup.setbit(i, 1);
+			}
+			else
+				sup.setbit(i, 0);
 		}
-		else
-		{
-			return ptr[N - pos - 1];
-		}
+		return *this;
 	}
 
-	bool& operator[](std::size_t pos)
+	Bitset& operator^= (const Bitset& rhs)
 	{
-		if (pos > N - 1 || pos < 0)
+		for (size_t i = 0; i < N; ++i)
 		{
-			throw out_of_range();
+			sup.setbit(i, !(sup.getbit(i) == rhs.sup.getbit(i)));
 		}
-		else
-		{
-			return ptr[N - pos - 1];
-		}
+		return *this;
 	}
 
-	Bitset& operator =(Bitset<N> &rhs)
+	Bitset& operator<<= (size_t pos)
 	{
-		if (*this != rhs)
+		for (size_t i = 0; i < N; ++i)
 		{
-			ptr = rhs.ptr;
-			return *this;
+			if (i + pos < N)
+				sup.setbit(i, sup.getbit(i + pos));
+			else
+				sup.setbit(i, 0);
 		}
-		else
-		{
-			return *this;
-		}
+		return *this;
 	}
 
-	Bitset& operator =(bool x)
+	Bitset& operator>>= (size_t pos)
 	{
-		if (*this != true)
+		for (size_t i = N - 1; i > 0; --i)
 		{
-			*this = true;
-			return *this;
+			if (i - pos >= 0)
+				sup.setbit(i, sup.getbit(i - pos));
+			else
+				sup.setbit(i, 0);
 		}
-		else
-		{
-			return *this;
-		}
+		return *this;
 	}
 
-	//
+	Bitset operator~()
+	{
+		for (size_t i = 0; i < N; ++i)
+		{
+			if (sup.getbit(i) == 0)
+				sup.setbit(i, 1);
+			else
+				sup.setbit(i, 0);
+		}
+		return *this;
+	}
 
-	template <size_t N> friend Bitset<N>& operator&=(Bitset<N>& lhs, const Bitset<N>& other);
+	Bitset operator<<(size_t pos)
+	{
+		for (size_t i = 0; i < N; ++i)
+		{
+			if (i + pos < N)
+				sup.setbit(i, sup.getbit(i + pos));
+			else
+				sup.setbit(i, 0);
+		}
+		return *this;
+	}
 
-	template <size_t N> friend Bitset<N> operator&(const Bitset<N>& rhs);
+	Bitset operator >> (size_t pos)
+	{
+		for (int i = N - 1; i >= 0; --i)
+		{
+			if (i - pos >= 0) {
+				int a = sup.getbit(i - pos);
+				sup.setbit(i, sup.getbit(i - pos));
+			}
+			else
+				sup.setbit(i, 0);
+		}
+		return *this;
+	}
 
-	template <size_t N> friend Bitset<N>& operator|=(Bitset<N>& lhs, const Bitset<N>& other);
+	bool operator== (const Bitset& rhs)
+	{
+		if (N != rhs.size())
+			return false;
+		for (int i = 0; i < N; ++i)
+		{
+			if (sup.getbit(i) != rhs.sup.getbit(i))
+				return false;
+		}
+		return true;
+	}
 
-	template <size_t N> friend Bitset<N> operator|(Bitset<N>& lhs, const Bitset<N>& other);
+	std::string to_string()  
+	{
+		char* str = new char[N + 1];
+		for (size_t i = 0; i < N; ++i)
+		{
+			str[i] = 48 + sup.getbit(i);
+		}
+		str[N] = '\0';
+		std::string stri;
+		stri.reserve(N);
+		stri = str;
+		delete[] str;
+		return stri;
+	}
 
-	template <size_t N> friend Bitset<N>& operator^=(Bitset<N>& lhs, const Bitset<N>& other);
-
-	template <size_t N> friend Bitset<N> operator^(Bitset<N>& lhs, const Bitset<N>& other);
-
-	template <size_t N> friend Bitset<N> operator~(Bitset<N>& lhs);
-
-	template <size_t N> friend bool operator==(const Bitset<N>& lhs, const Bitset<N>& other);
-
-	template <size_t N> friend bool operator!=(const Bitset<N>& lhs, const Bitset<N>& other);
+	unsigned long to_ulong()
+	{
+		double tolong = 0;
+		int two = 1;
+		for (int i = N - 1; i >= 0; --i)
+		{
+			if (tolong + sup.getbit(i) * two > 4294967295)
+				throw std::overflow_error("Overflow");
+			tolong += sup.getbit(i) * two;
+			two *= 2;
+		}
+		return tolong;
+	}
 };
 
-template <size_t N>
-Bitset<N>& operator&=(Bitset<N>& lhs, const Bitset<N>& other)
+template<size_t N>
+std::ostream & operator<<(std::ostream &out, Bitset<N> &rhs)
 {
-	for (size_t i = 0; i < N; ++i)
-		lhs.ptr[i] = lhs.ptr[i] & other.ptr[i];
-	return *this;
+	for (int i = 0; i < N; ++i)
+		out << rhs[i];
+	return out;
 }
 
-template <size_t N>
-Bitset<N> operator&(const Bitset<N>& rhs)
+template<size_t N>
+Bitset<N> operator& (const Bitset<N>& lhs, const Bitset<N>& rhs)
 {
-	return Bitset<N>(lhs) &= rhs;
+	Bitset<N> tmp = lhs;
+	tmp &= rhs;
+	return tmp;
 }
 
-template <size_t N>
-Bitset<N>& operator|=(Bitset<N>& lhs, const Bitset<N>& other)
+template<size_t N>
+Bitset<N> operator| (const Bitset<N>& lhs, const Bitset<N>& rhs)
 {
-	for (size_t i = 0; i < N; ++i)
-		lhs.ptr[i] = lhs.ptr[i] | other.ptr[i];
-	return *this;
+
+	Bitset<N> tmp = lhs;
+	tmp |= rhs;
+	return tmp;
 }
 
-template <size_t N>
-Bitset<N> operator|(Bitset<N>& lhs, const Bitset<N>& other)
+template<size_t N>
+Bitset<N> operator^ (const Bitset<N>& lhs, const Bitset<N>& rhs)
 {
-	return lhs |= rhs;
+	Bitset<N> tmp = lhs;
+	tmp ^= rhs;
+	return tmp;
 }
 
-template <size_t N>
-Bitset<N>& operator^=(Bitset<N>& lhs, const Bitset<N>& other)
+int main()
 {
-	for (size_t i = 0; i < N; ++i)
-		lhs.ptr[i] = lhs.ptr[i] ^ other.ptr[i];
-	return *this;
-}
+	Bitset <8> a(5);
+	std::cout << a << std::endl;
+	a.reset();
+	std::cout << a;
 
-template <size_t N>
-Bitset<N> operator^(Bitset<N>& lhs, const Bitset<N>& other)
-{
-	return lhs ^= rhs;
-}
-
-template <size_t N>
-Bitset<N> operator~(Bitset<N>& lhs)
-{
-	return lhs.flip();
-}
-
-template <size_t N>
-bool operator==(const Bitset<N>& lhs, const Bitset<N>& other)
-{
-	for (int i = N - 1; i >= 0; i--)
-	{
-		if (lhs.ptr[i] != other.ptr[i])
-			return false;
-	}
-	return true;
-}
-
-template <size_t N>
-bool operator!=(const Bitset<N>& lhs, const Bitset<N>& other)
-{
-	for (int i = N - 1; i >= 0; i--)
-	{
-		if (lhs.ptr[i] != other.ptr[i])
-			return true;
-	}
-	return false;
 }
