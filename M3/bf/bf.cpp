@@ -64,12 +64,6 @@ public:
 		return f;
 	}
 
-	static boolean_function zero(size_t dimension)
-	{
-		boolean_function z(dimension);
-		return z;
-	}
-
 	static boolean_function one(size_t dimension)
 	{
 		boolean_function on(dimension);
@@ -139,6 +133,12 @@ public:
 
 	boolean_function(const boolean_function& table) : func(table.func)
 	{}
+
+	static boolean_function zero(size_t dimension)
+	{
+		boolean_function z(dimension);
+		return z;
+	}
 
 	boolean_function& operator=(const boolean_function& rhs)
 	{
@@ -350,6 +350,35 @@ public:
 	{
 		std::vector<boolean_function> fs = vars;
 		return (*this)(fs);
+	}
+
+	std::string get_polynom(const boolean_function & function) {
+
+		auto buf = function.anf();
+
+		std::string result("");
+
+		if (buf[0])
+			result = "1";
+
+		for (size_t i = 1; i < buf.size(); ++i) {
+			if (buf[i]) {
+				if (result.size())
+					result += " + ";
+				std::vector<size_t> nums;
+				for (size_t j = 0; j < function.dimension(); ++j)
+					if ((i % static_cast<size_t>(pow(2, j + 1))) >= pow(2, j + 1) / 2)
+						nums.push_back(j);
+
+				for (size_t j = 0; j < nums.size(); ++j) {
+					result += "x";
+					result += std::to_string(nums[j]);
+				}
+			}
+		}
+
+		return result;
+
 	}
 
 	bool is_monotone() const
