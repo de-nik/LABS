@@ -381,6 +381,29 @@ public:
 
 	}
 
+	bool is_monotone() const
+	{
+        {
+            if (func.size() == 0)
+            {
+                throw std::exception("Empty");
+            }
+            for (size_t i = 0; i < func.size(); ++i)
+            {
+                for (size_t j = 0; j < dimension(); ++j)
+                {
+                    if ((size_t(pow(2, j)) & i) == 0)
+                    {
+                        if (func[i + size_type(pow(2, j))] < func[i])
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+	}
 	
 	bool is_symmetric() const
 	{
