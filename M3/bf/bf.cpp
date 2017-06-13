@@ -381,14 +381,34 @@ public:
 
 	}
 
-	bool is_monotone() const
-	{
-		if (func.size() == 0)
-			throw std::exception("Empty");
-		for (size_t i = 0; i < func.size() - 1; ++i)
-			if (func[i] > func[i + 1])
-				return false;
-		return true;
+	bool is_monotone() const {
+		for (size_type i = 0; i < size(); ++i) { // mogno lu4we?
+			if (Series[i]) {
+
+				std::vector<size_type> buf;
+				for (size_type j = 0; j < dimension(); ++j) {
+					if ((i % static_cast<size_type>(pow(2, j + 1))) >= pow(2, j + 1) / 2)
+						buf.push_back(j);
+				}
+
+				for (size_type j = i + 1; j < size(); ++j) {
+
+					if (!Series[j]) {
+
+						size_type counter(0);
+
+						for (auto & i1 : buf)
+							if ((j % static_cast<size_type>(pow(2, i1 + 1))) >= pow(2, i1 + 1) / 2)
+								++counter;
+
+						if (counter == buf.size())
+							return 0;
+
+					}
+				}
+			}
+		}
+		return 1;
 	}
 	bool is_symmetric() const
 	{
